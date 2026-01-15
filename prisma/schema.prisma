@@ -1,0 +1,360 @@
+// Retaliation Esports Database Schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ============================================
+// USER & AUTHENTICATION
+// ============================================
+
+model User {
+  id            String   @id @default(cuid())
+  discordId     String   @unique
+  username      String
+  discriminator String?
+  email         String?
+  avatar        String?
+  guildRoles    String[] // Array of Discord role IDs
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  // Relations
+  captainOfTeams  Team[]         @relation("TeamCaptain")
+  teamMemberships TeamMember[]
+  auditLogs       AuditLog[]
+  notifications   Notification[]
+}
+
+// ============================================
+// ROSTER SYSTEM
+// ============================================
+
+model Roster {
+  id             String   @id @default(cuid())
+  name           String
+  tag            String? // Team abbreviation
+  primaryColor   String // Hex color
+  secondaryColor String? // Hex color
+  image          String? // Logo URL
+  description    String?  @db.Text
+  isActive       Boolean  @default(true)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  players Player[]
+
+  @@index([isActive])
+}
+
+model Player {
+  id         String  @id @default(cuid())
+  name       String
+  inGameName String?
+  role       String? // Position/role in team
+  image      String? // Profile image URL
+  bio        String? @db.Text
+
+  // Stats (optional)
+  goals   Int?
+  assists Int?
+  saves   Int?
+
+  // Social links
+  twitter   String?
+  twitch    String?
+  youtube   String?
+  instagram String?
+  discord   String?
+  steam     String?
+
+  rosterId String
+  roster   Roster @relation(fields: [rosterId], references: [id], onDelete: Cascade)
+
+  displayOrder Int      @default(0)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@index([rosterId])
+}
+
+// ============================================
+// TEAM SYSTEM
+// ============================================
+
+model Team {
+  id             String   @id @default(cuid())
+  name           String
+  tag            String?
+  logo           String?
+  primaryColor   String?
+  secondaryColor String?
+  captainId      String?
+  captain        User?    @relation("TeamCaptain", fields: [captainId], references: [id], onDelete: SetNull)
+  isActive       Boolean  @default(true)
+  verified       Boolean  @default(false)
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // Relations
+  members        TeamMember[]
+  signups        TournamentSignup[]
+  matchesAsTeam1 Match[]            @relation("Team1Matches")
+  matchesAsTeam2 Match[]            @relation("Team2Matches")
+
+  @@index([isActive])
+  @@index([verified])
+}
+
+model TeamMember {
+  id     String  @id @default(cuid())
+  teamId String
+  team   Team    @relation(fields: [teamId], references: [id], onDelete: Cascade)
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  playerName String // In case user doesn't have account
+  role       String   @default("player") // captain, player, substitute
+  joinedAt   DateTime @default(now())
+
+  @@unique([teamId, userId])
+  @@index([teamId])
+  @@index([userId])
+}
+
+// ============================================
+// TOURNAMENT SYSTEM
+// ============================================
+
+model Tournament {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @db.Text
+  bannerImage String?
+  images      String[] // Gallery images
+
+  // Dates
+  startDate            DateTime
+  registrationDeadline DateTime
+
+  // Links
+  discordLink   String?
+  rulesLink     String?
+  streamLink    String?
+  externalLinks Json? // Array of {title, url}
+
+  // Configuration
+  requirements   String? @db.Text
+  gameMode       String // "1v1", "2v2", "3v3"
+  format         String // "single_elimination", "double_elimination"
+  bestOf         Int     @default(1) // BO1, BO3, BO5, BO7
+  customRounds   Json? // Custom best-of per round
+  maxTeams       Int?
+  allowRandomize Boolean @default(false)
+
+  // Prize
+  prizeInfo String? @db.Text
+
+  // Status
+  status String @default("draft") // draft, open, closed, ongoing, completed
+
+  // Settings
+  requireEmailVerification Boolean   @default(true)
+  checkInEnabled           Boolean   @default(false)
+  checkInStart             DateTime?
+  checkInEnd               DateTime?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  signups TournamentSignup[]
+  bracket Bracket?
+  matches Match[]
+
+  @@index([status])
+  @@index([startDate])
+}
+
+model TournamentSignup {
+  id           String     @id @default(cuid())
+  tournamentId String
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  teamId String?
+  team   Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
+
+  // Contact info
+  teamName       String
+  captainEmail   String
+  captainDiscord String?
+
+  // Players info
+  playersInfo Json // Array of player details
+
+  // Verification
+  isVerified        Boolean   @default(false)
+  verificationToken String?   @unique
+  verifiedAt        DateTime?
+
+  // Status
+  status      String    @default("pending") // pending, approved, rejected, checked_in
+  checkedInAt DateTime?
+
+  // Notifications
+  reminderSent Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([tournamentId, teamName])
+  @@index([tournamentId])
+  @@index([status])
+  @@index([isVerified])
+}
+
+// ============================================
+// BRACKET SYSTEM
+// ============================================
+
+model Bracket {
+  id           String     @id @default(cuid())
+  tournamentId String     @unique
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  format      String // "single_elimination", "double_elimination"
+  bracketData Json // Full bracket structure
+  isLocked    Boolean @default(false)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Match {
+  id           String     @id @default(cuid())
+  tournamentId String
+  tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
+
+  // Match info
+  round       Int
+  matchNumber Int
+  bracketType String? // "winners", "losers", "grand_finals"
+
+  // Teams
+  team1Id String?
+  team1   Team?   @relation("Team1Matches", fields: [team1Id], references: [id], onDelete: SetNull)
+  team2Id String?
+  team2   Team?   @relation("Team2Matches", fields: [team2Id], references: [id], onDelete: SetNull)
+
+  // Scores
+  team1Score Int?
+  team2Score Int?
+  winnerId   String?
+
+  // Status
+  status      String    @default("pending") // pending, live, completed, disputed
+  scheduledAt DateTime?
+  completedAt DateTime?
+
+  // Additional data
+  vodUrl  String?
+  notes   String? @db.Text
+  dispute String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([tournamentId])
+  @@index([status])
+}
+
+// ============================================
+// SUPPORT SYSTEM
+// ============================================
+
+model SupportTicket {
+  id         String  @id @default(cuid())
+  name       String
+  email      String
+  discord    String?
+  category   String // tournament_question, technical_issue, etc.
+  priority   String  @default("normal") // normal, urgent
+  subject    String
+  message    String  @db.Text
+  attachment String?
+
+  status     String  @default("new") // new, in_progress, resolved
+  assignedTo String?
+  response   String? @db.Text
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([category])
+}
+
+model FAQ {
+  id           String  @id @default(cuid())
+  category     String
+  question     String  @db.Text
+  answer       String  @db.Text
+  displayOrder Int     @default(0)
+  isPublished  Boolean @default(true)
+  viewCount    Int     @default(0)
+  helpfulCount Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([category])
+  @@index([isPublished])
+}
+
+// ============================================
+// NOTIFICATION SYSTEM
+// ============================================
+
+model Notification {
+  id     String @id @default(cuid())
+  userId String
+  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  title   String
+  message String  @db.Text
+  type    String // tournament, match, system
+  link    String?
+  isRead  Boolean @default(false)
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([isRead])
+}
+
+// ============================================
+// AUDIT LOG
+// ============================================
+
+model AuditLog {
+  id     String  @id @default(cuid())
+  userId String?
+  user   User?   @relation(fields: [userId], references: [id], onDelete: SetNull)
+
+  action     String // create, update, delete
+  resource   String // roster, tournament, bracket, etc.
+  resourceId String?
+  details    Json? // Additional data about the action
+  ipAddress  String?
+
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+  @@index([resource])
+  @@index([createdAt])
+}
