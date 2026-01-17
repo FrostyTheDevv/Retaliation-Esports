@@ -38,7 +38,7 @@ export default function Home() {
               View Tournaments
             </Link>
             <a
-              href="https://discord.gg/your-invite"
+              href="https://discord.gg/grp3xuqHBV"
               target="_blank"
               rel="noopener noreferrer"
               className="px-4 py-2 bg-[#77010F] text-white font-semibold rounded-lg hover:bg-[#5A010C] transition-all hidden md:block"
@@ -71,7 +71,7 @@ export default function Home() {
                   View Tournaments
                 </Link>
                 <a
-                  href="https://discord.gg/your-invite"
+                  href="https://discord.gg/grp3xuqHBV"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block px-4 py-3 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors"
@@ -109,7 +109,7 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/tournaments"
-              className="px-8 py-4 bg-[#77010F] text-white font-semibold rounded-lg hover:bg-[#5A010C] transition-all transform hover:scale-105"
+              className="px-8 py-4 border-2 border-[#77010F] text-[#77010F] font-semibold rounded-lg hover:bg-[#77010F]/10 transition-all"
             >
               View Tournaments
             </Link>
@@ -120,10 +120,10 @@ export default function Home() {
               Explore Our Teams
             </Link>
             <a
-              href="https://discord.gg/your-invite"
+              href="https://discord.gg/grp3xuqHBV"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 border-2 border-white text-white font-semibold rounded-lg hover:bg-white/10 transition-all"
+              className="px-8 py-4 border-2 border-[#77010F] text-[#77010F] font-semibold rounded-lg hover:bg-[#77010F]/10 transition-all"
             >
               Join Discord
             </a>
