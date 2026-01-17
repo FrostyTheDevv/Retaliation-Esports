@@ -232,7 +232,7 @@
   - [ ] Description (rich text editor)
   - [ ] Tournament banner image upload
   - [ ] Additional images (gallery)
-  - [ ] Start date and time
+  - [ ] Start date and time/End date and time
   - [ ] Registration deadline
   - [ ] External links (Discord, rules doc, stream, etc.)
   - [ ] Requirements text
@@ -287,6 +287,42 @@
 - [ ] `DELETE /api/admin/tournaments/[id]/signups/[signupId]` - Remove team
 - [ ] `POST /api/admin/tournaments/[id]/generate-bracket` - Generate bracket
 - [ ] Add validation and error handling
+
+### 4.5 Tournament Management Backend & Dispute System
+- [ ] **Live Tournament Management:**
+  - [ ] Real-time match status tracking
+  - [ ] Match check-in system
+  - [ ] No-show detection and auto-disqualification
+  - [ ] Match result submission by teams
+  - [ ] Score verification system
+- [ ] **Dispute Resolution System:**
+  - [ ] Dispute submission form for teams
+  - [ ] Dispute ticket creation with evidence upload
+  - [ ] Admin dispute queue/dashboard
+  - [ ] Dispute review interface with match details
+  - [ ] Resolution actions (overturn, uphold, rematch)
+  - [ ] Dispute history and audit log
+  - [ ] Automated notifications for dispute status
+- [ ] **Matchmaking & Scheduling:**
+  - [ ] Automated match scheduling based on bracket progression
+  - [ ] Time zone handling for participants
+  - [ ] Match postponement requests
+  - [ ] Admin manual match rescheduling
+  - [ ] Schedule conflict detection
+  - [ ] Lobby/server assignment tracking
+- [ ] **Issue Management:**
+  - [ ] Technical issue reporting
+  - [ ] Connectivity problem tracking
+  - [ ] Admin intervention tools
+  - [ ] Match pause/resume functionality
+  - [ ] Rollback match results capability
+- [ ] **Tournament Monitoring:**
+  - [ ] Live tournament dashboard
+  - [ ] Active match monitoring
+  - [ ] Team status indicators (online, ready, in-match)
+  - [ ] Real-time notification system for admins
+  - [ ] Tournament health metrics
+  - [ ] Auto-alerts for issues requiring intervention
 
 ---
 
@@ -1650,6 +1686,171 @@
 - [ ] Quick response to issues
 - [ ] Collect user feedback
 - [ ] Plan hotfix releases if needed
+
+---
+
+## Phase 27: User Account System & Social Features
+
+### 27.1 User Account Creation & Management
+- [ ] **Account Registration:**
+  - [ ] Create account page (`/app/account/register/page.tsx`)
+  - [ ] Username creation form (unique, validation)
+  - [ ] Email input and verification
+  - [ ] Password creation (optional, since Discord OAuth)
+  - [ ] Discord account linking/connection
+  - [ ] Terms of service acceptance
+  - [ ] Avatar/profile picture upload
+- [ ] **User Profile:**
+  - [ ] Unique user ID generation
+  - [ ] Profile page (`/app/profile/[userId]/page.tsx`)
+  - [ ] Display name, username, avatar
+  - [ ] Bio/description field
+  - [ ] Linked Discord account display
+  - [ ] Account creation date
+  - [ ] Public/private profile toggle
+  - [ ] Edit profile functionality
+- [ ] **Database Schema Extensions:**
+  - [ ] Add username field to User model
+  - [ ] Add unique user ID field
+  - [ ] Add bio/description field
+  - [ ] Add privacy settings
+  - [ ] Create Friendship model (user relationships)
+  - [ ] Create Group model (user groups)
+  - [ ] Create GroupMember model (group membership)
+
+### 27.2 Friend System
+- [ ] **Friend Management:**
+  - [ ] Send friend request functionality
+  - [ ] Accept/decline friend requests
+  - [ ] Friend list page (`/app/friends/page.tsx`)
+  - [ ] Search users by username/user ID
+  - [ ] Friend request notifications
+  - [ ] Remove friend functionality
+  - [ ] Block user functionality
+  - [ ] Friend status indicators (online, offline, in-game)
+- [ ] **Friend API Routes:**
+  - [ ] `POST /api/friends/request` - Send friend request
+  - [ ] `PATCH /api/friends/request/[id]` - Accept/decline request
+  - [ ] `GET /api/friends` - Get friend list
+  - [ ] `DELETE /api/friends/[id]` - Remove friend
+  - [ ] `POST /api/friends/block` - Block user
+  - [ ] `GET /api/users/search` - Search users
+
+### 27.3 Group/Party System
+- [ ] **Group Creation:**
+  - [ ] Create group page (`/app/groups/new/page.tsx`)
+  - [ ] Group name input
+  - [ ] Group description
+  - [ ] Group avatar/icon
+  - [ ] Privacy settings (public, private, invite-only)
+  - [ ] Maximum member limit
+  - [ ] Group tags/interests
+- [ ] **Group Management:**
+  - [ ] Group page (`/app/groups/[id]/page.tsx`)
+  - [ ] Invite friends to group
+  - [ ] Accept/decline group invitations
+  - [ ] Kick/remove members (group owner)
+  - [ ] Leave group functionality
+  - [ ] Transfer group ownership
+  - [ ] Group settings page
+  - [ ] Member list with roles
+  - [ ] Group activity feed
+- [ ] **Group Features:**
+  - [ ] Group chat integration
+  - [ ] Group tournament registration
+  - [ ] Group statistics
+  - [ ] Group achievements
+- [ ] **Group API Routes:**
+  - [ ] `POST /api/groups` - Create group
+  - [ ] `GET /api/groups` - List user's groups
+  - [ ] `GET /api/groups/[id]` - Get group details
+  - [ ] `PATCH /api/groups/[id]` - Update group
+  - [ ] `DELETE /api/groups/[id]` - Delete group
+  - [ ] `POST /api/groups/[id]/invite` - Invite member
+  - [ ] `POST /api/groups/[id]/join` - Join group
+  - [ ] `DELETE /api/groups/[id]/members/[userId]` - Remove member
+
+### 27.4 In-Website Chat System
+- [ ] **Chat Infrastructure:**
+  - [ ] Install WebSocket library (Socket.io or Pusher)
+  - [ ] Setup WebSocket server/connection
+  - [ ] Create Message model in database
+  - [ ] Create Conversation model
+  - [ ] Message encryption (optional)
+- [ ] **Direct Messages:**
+  - [ ] Chat interface component (`/components/chat/ChatInterface.tsx`)
+  - [ ] Message list page (`/app/messages/page.tsx`)
+  - [ ] Conversation view (`/app/messages/[conversationId]/page.tsx`)
+  - [ ] Real-time message sending
+  - [ ] Real-time message receiving
+  - [ ] Message notifications
+  - [ ] Unread message counter
+  - [ ] Message history loading
+  - [ ] Message search functionality
+  - [ ] File/image sharing in chat
+  - [ ] Emoji support
+  - [ ] Message editing and deletion
+  - [ ] Typing indicators
+  - [ ] Read receipts
+- [ ] **Group Chat:**
+  - [ ] Group conversation support
+  - [ ] Group chat page (`/app/groups/[id]/chat/page.tsx`)
+  - [ ] Member mentions (@username)
+  - [ ] Group chat notifications
+  - [ ] Chat moderation tools
+  - [ ] Message pinning
+  - [ ] Chat history
+- [ ] **Chat Features:**
+  - [ ] Online status indicators
+  - [ ] Last seen timestamp
+  - [ ] Message reactions
+  - [ ] Reply/quote functionality
+  - [ ] Chat themes/customization
+  - [ ] Do Not Disturb mode
+  - [ ] Mute conversations
+  - [ ] Block users from messaging
+- [ ] **Chat API Routes:**
+  - [ ] `GET /api/messages` - Get conversations list
+  - [ ] `GET /api/messages/[conversationId]` - Get messages
+  - [ ] `POST /api/messages/[conversationId]` - Send message
+  - [ ] `PATCH /api/messages/[messageId]` - Edit message
+  - [ ] `DELETE /api/messages/[messageId]` - Delete message
+  - [ ] `POST /api/messages/read` - Mark messages as read
+  - [ ] WebSocket event handlers for real-time
+
+### 27.5 User Settings & Preferences
+- [ ] **Account Settings:**
+  - [ ] Settings page (`/app/settings/page.tsx`)
+  - [ ] Change username
+  - [ ] Update email
+  - [ ] Change password (if applicable)
+  - [ ] Link/unlink Discord account
+  - [ ] Privacy settings
+  - [ ] Notification preferences
+  - [ ] Account deletion
+- [ ] **Notification Settings:**
+  - [ ] Email notifications toggle
+  - [ ] Discord DM notifications toggle
+  - [ ] Friend request notifications
+  - [ ] Message notifications
+  - [ ] Tournament notifications
+  - [ ] Group invitation notifications
+
+### 27.6 Integration with Existing Systems
+- [ ] **Tournament Integration:**
+  - [ ] Register as group for tournaments
+  - [ ] User tournament history
+  - [ ] Friend tournament invitations
+  - [ ] Group tournament performance tracking
+- [ ] **Roster Integration:**
+  - [ ] Link user profiles to player profiles
+  - [ ] User can claim player profile
+  - [ ] Display user's teams/rosters
+- [ ] **Social Features:**
+  - [ ] User activity feed
+  - [ ] Friend activity notifications
+  - [ ] Share tournament results
+  - [ ] Achievement sharing
 
 ---
 
