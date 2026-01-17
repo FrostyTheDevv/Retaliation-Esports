@@ -1,15 +1,5 @@
 {
   "buildCommand": "prisma generate && next build",
   "framework": "nextjs",
-  "installCommand": "npm install",
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "NEXTAUTH_URL": "@nextauth_url",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "DISCORD_CLIENT_ID": "@discord_client_id",
-    "DISCORD_CLIENT_SECRET": "@discord_client_secret",
-    "DISCORD_GUILD_ID": "@discord_guild_id",
-    "DISCORD_ADMIN_ROLE_IDS": "@discord_admin_role_ids",
-    "DISCORD_BOT_TOKEN": "@discord_bot_token"
-  }
+  "installCommand": "npm install"
 }
