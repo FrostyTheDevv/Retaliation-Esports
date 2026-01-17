@@ -13,6 +13,15 @@ const eslintConfig = defineConfig([
     "build/**",
     "next-env.d.ts",
   ]),
+  {
+    rules: {
+      // Disable inline styles rule - we need CSS custom properties for dynamic database colors
+      "react/no-inline-styles": "off",
+      "no-inline-styles": "off",
+      // Disable Tailwind gradient class suggestions
+      "suggestCanonicalClasses": "off",
+    },
+  },
 ]);
 
 export default eslintConfig;
