@@ -6,13 +6,13 @@ export default function Home() {
     <div className="min-h-screen bg-black">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        <div className="absolute inset-0 bg-linear-to-b from-purple-900/20 via-black to-black" />
+        <div className="absolute inset-0 bg-linear-to-b from-[#77010F]/20 via-black to-black" />
         <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-6xl md:text-8xl font-bold text-white mb-6">
             RETALIATION
-            <span className="block text-transparent bg-clip-text bg-linear-to-r from-purple-400 to-pink-600">
+            <span className="block text-transparent bg-clip-text bg-linear-to-r from-[#77010F] to-black">
               ESPORTS
             </span>
           </h1>
@@ -22,13 +22,13 @@ export default function Home() {
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link
               href="/rosters"
-              className="px-8 py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105"
+              className="px-8 py-4 bg-[#77010F] text-white font-semibold rounded-lg hover:bg-[#5A010C] transition-all transform hover:scale-105"
             >
               View Our Rosters
             </Link>
             <Link
               href="/tournaments"
-              className="px-8 py-4 border-2 border-purple-500 text-purple-400 font-semibold rounded-lg hover:bg-purple-500/10 transition-all"
+              className="px-8 py-4 border-2 border-[#77010F] text-[#77010F] font-semibold rounded-lg hover:bg-[#77010F]/10 transition-all"
             >
               Tournaments
             </Link>
@@ -43,8 +43,8 @@ export default function Home() {
             Built for Champions
           </h2>
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-purple-500 transition-colors">
-              <div className="w-12 h-12 bg-linear-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mb-4">
+            <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-[#77010F] transition-colors">
+              <div className="w-12 h-12 bg-linear-to-br from-[#77010F] to-black rounded-lg flex items-center justify-center mb-4">
                 <Users className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">Elite Rosters</h3>
@@ -53,8 +53,8 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-purple-500 transition-colors">
-              <div className="w-12 h-12 bg-linear-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mb-4">
+            <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-[#77010F] transition-colors">
+              <div className="w-12 h-12 bg-linear-to-br from-[#77010F] to-black rounded-lg flex items-center justify-center mb-4">
                 <Trophy className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">Tournaments</h3>
@@ -63,8 +63,8 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-purple-500 transition-colors">
-              <div className="w-12 h-12 bg-linear-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mb-4">
+            <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-[#77010F] transition-colors">
+              <div className="w-12 h-12 bg-linear-to-br from-[#77010F] to-black rounded-lg flex items-center justify-center mb-4">
                 <Gamepad2 className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">Multi-Game</h3>
@@ -73,8 +73,8 @@ export default function Home() {
               </p>
             </div>
 
-            <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-purple-500 transition-colors">
-              <div className="w-12 h-12 bg-linear-to-br from-purple-600 to-pink-600 rounded-lg flex items-center justify-center mb-4">
+            <div className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-[#77010F] transition-colors">
+              <div className="w-12 h-12 bg-linear-to-br from-[#77010F] to-black rounded-lg flex items-center justify-center mb-4">
                 <Calendar className="w-6 h-6 text-white" />
               </div>
               <h3 className="text-xl font-semibold text-white mb-2">Events</h3>
@@ -97,7 +97,7 @@ export default function Home() {
           </p>
           <Link
             href="/rosters"
-            className="inline-block px-8 py-4 bg-linear-to-r from-purple-600 to-pink-600 text-white font-semibold rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all transform hover:scale-105"
+            className="inline-block px-8 py-4 bg-[#77010F] text-white font-semibold rounded-lg hover:bg-[#5A010C] transition-all transform hover:scale-105"
           >
             Explore Our Teams
           </Link>
