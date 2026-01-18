@@ -14,6 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL('https://retaliationesports.net'),
   title: "Retaliation Esports - We're finally retaliating",
   description: "We're finally retaliating. RETALIATION ESPORTS - Competitive gaming organization with elite teams and tournaments.",
   keywords: ["esports", "gaming", "tournaments", "competitive gaming", "retaliation esports"],

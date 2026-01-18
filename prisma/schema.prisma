@@ -6,6 +6,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ============================================
@@ -153,9 +154,14 @@ model Tournament {
   gameMode       String // "1v1", "2v2", "3v3"
   format         String // "single_elimination", "double_elimination"
   bestOf         Int     @default(1) // BO1, BO3, BO5, BO7
-  customRounds   Json? // Custom best-of per round
+  customRounds   Json? // Custom best-of per round {roundNumber: bestOf}
+  customRoundNames Json? // Custom round names {roundNumber: name}
   maxTeams       Int?
+  minTeamSize    Int?
+  maxTeamSize    Int?
   allowRandomize Boolean @default(false)
+  manualSeeding  Boolean @default(false)
+  thirdPlaceMatch Boolean @default(false)
 
   // Prize
   prizeInfo String? @db.Text
@@ -168,6 +174,12 @@ model Tournament {
   checkInEnabled           Boolean   @default(false)
   checkInStart             DateTime?
   checkInEnd               DateTime?
+  customQuestions          Json? // Array of registration questions
+  
+  // Notification Settings
+  emailReminders Boolean @default(true)
+  reminderHours  Int     @default(24) // Hours before event to send reminder
+  discordReminders Boolean @default(false)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -257,19 +269,62 @@ model Match {
   winnerId   String?
 
   // Status
-  status      String    @default("pending") // pending, live, completed, disputed
+  status      String    @default("pending") // pending, ready, live, completed, disputed, postponed
   scheduledAt DateTime?
+  startedAt   DateTime?
   completedAt DateTime?
+
+  // Check-in system
+  team1CheckedIn Boolean   @default(false)
+  team2CheckedIn Boolean   @default(false)
+  checkInTime    DateTime?
+
+  // Lobby/Server info
+  lobbyCode String?
+  serverInfo String? @db.Text
 
   // Additional data
   vodUrl  String?
   notes   String? @db.Text
-  dispute String? @db.Text
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  // Relations
+  disputes Dispute[]
+
   @@index([tournamentId])
+  @@index([status])
+}
+
+model Dispute {
+  id      String @id @default(cuid())
+  matchId String
+  match   Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  // Dispute info
+  reportedByTeamId String?
+  category         String // score_incorrect, no_show, technical_issue, rule_violation, other
+  description      String  @db.Text
+  evidence         String[] // Array of evidence URLs (screenshots, videos)
+
+  // Admin review
+  status      String    @default("pending") // pending, under_review, resolved, dismissed
+  reviewedBy  String? // Admin user ID
+  resolution  String? @db.Text
+  action      String? // overturn, uphold, rematch, disqualify, no_action
+  reviewedAt  DateTime?
+  reviewNotes String? @db.Text
+
+  // Match state before dispute
+  originalTeam1Score Int?
+  originalTeam2Score Int?
+  originalWinnerId   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([matchId])
   @@index([status])
 }
 

@@ -90,3 +90,23 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     strategy: "database",
   },
 })
+
+// Helper function to check if user is admin
+export async function checkAdmin() {
+  const session = await auth()
+  
+  if (!session?.user) {
+    throw new Error("Unauthorized")
+  }
+
+  const adminRoleIds = process.env.ADMIN_ROLE_IDS?.split(",") || []
+  const userRoles = (session.user as any).guildRoles || []
+  
+  const isAdmin = adminRoleIds.some((roleId) => userRoles.includes(roleId))
+  
+  if (!isAdmin) {
+    throw new Error("Forbidden - Admin access required")
+  }
+
+  return session
+}

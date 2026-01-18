@@ -26,6 +26,12 @@ export default function Home() {
               Sign In
             </Link>
             <Link
+              href="/admin"
+              className="text-gray-300 hover:text-white transition-colors hidden md:block"
+            >
+              Admin
+            </Link>
+            <Link
               href="/rosters"
               className="text-gray-300 hover:text-white transition-colors hidden md:block"
             >

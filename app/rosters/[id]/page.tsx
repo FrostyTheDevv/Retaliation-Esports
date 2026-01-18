@@ -91,7 +91,7 @@ export default async function RosterDetailPage({
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {roster.players.map((player) => (
+            {roster.players.map((player: any) => (
               <div
                 key={player.id}
                 className="bg-gray-800/50 rounded-xl border border-gray-700 hover:border-brand-primary transition-all overflow-hidden"
