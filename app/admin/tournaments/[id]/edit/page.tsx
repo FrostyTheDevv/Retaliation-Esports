@@ -39,6 +39,11 @@ export default async function EditTournamentPage({ params }: PageProps) {
     checkInEnabled: tournament.checkInEnabled,
     status: tournament.status as "draft" | "open",
     bannerUrl: tournament.bannerImage,
+    manualSeeding: tournament.manualSeeding || false,
+    thirdPlaceMatch: tournament.thirdPlaceMatch || false,
+    emailReminders: tournament.emailReminders || false,
+    reminderHours: tournament.reminderHours || 24,
+    discordReminders: tournament.discordReminders || false,
   }
 
   return (

@@ -28,7 +28,6 @@ model User {
   captainOfTeams  Team[]         @relation("TeamCaptain")
   teamMemberships TeamMember[]
   auditLogs       AuditLog[]
-  notifications   Notification[]
 }
 
 // ============================================
@@ -95,6 +94,7 @@ model Team {
   logo           String?
   primaryColor   String?
   secondaryColor String?
+  timezone       String?  // IANA timezone (e.g., "America/New_York")
   captainId      String?
   captain        User?    @relation("TeamCaptain", fields: [captainId], references: [id], onDelete: SetNull)
   isActive       Boolean  @default(true)
@@ -107,6 +107,7 @@ model Team {
   signups        TournamentSignup[]
   matchesAsTeam1 Match[]            @relation("Team1Matches")
   matchesAsTeam2 Match[]            @relation("Team2Matches")
+  teamStatus     TeamStatus?
 
   @@index([isActive])
   @@index([verified])
@@ -268,33 +269,57 @@ model Match {
   team2Score Int?
   winnerId   String?
 
+  // Team-submitted results
+  team1SubmittedScore Int?
+  team2SubmittedScore Int?
+  team1SubmittedWinner String?
+  team2SubmittedWinner String?
+  resultsMatch Boolean @default(false)
+
   // Status
-  status      String    @default("pending") // pending, ready, live, completed, disputed, postponed
+  status      String    @default("pending") // pending, ready, live, completed, disputed, postponed, paused
   scheduledAt DateTime?
   startedAt   DateTime?
   completedAt DateTime?
+  pausedAt    DateTime?
+  pauseReason String?   @db.Text
 
   // Check-in system
-  team1CheckedIn Boolean   @default(false)
-  team2CheckedIn Boolean   @default(false)
-  checkInTime    DateTime?
+  team1CheckedIn  Boolean   @default(false)
+  team2CheckedIn  Boolean   @default(false)
+  team1CheckInTime DateTime?
+  team2CheckInTime DateTime?
+  checkInDeadline DateTime?
+  team1NoShow    Boolean   @default(false)
+  team2NoShow    Boolean   @default(false)
 
   // Lobby/Server info
   lobbyCode String?
   serverInfo String? @db.Text
 
+  // Postponement
+  postponementRequested Boolean @default(false)
+  postponementReason    String? @db.Text
+  postponementRequestedBy String?
+  postponementApproved  Boolean @default(false)
+
   // Additional data
   vodUrl  String?
   notes   String? @db.Text
+  previousWinnerId String?
+  rollbackCount    Int @default(0)
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   // Relations
   disputes Dispute[]
+  technicalIssues TechnicalIssue[]
+  matchHistory MatchHistory[]
 
   @@index([tournamentId])
   @@index([status])
+  @@index([scheduledAt])
 }
 
 model Dispute {
@@ -326,6 +351,114 @@ model Dispute {
 
   @@index([matchId])
   @@index([status])
+}
+
+model TechnicalIssue {
+  id      String @id @default(cuid())
+  matchId String
+  match   Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  // Issue info
+  reportedByTeamId String
+  issueType        String // connection, server, game_crash, lag, audio, other
+  description      String @db.Text
+  severity         String @default("medium") // low, medium, high, critical
+  
+  // Admin response
+  status         String    @default("open") // open, investigating, resolved, closed
+  assignedTo     String? // Admin user ID
+  resolution     String? @db.Text
+  resolvedAt     DateTime?
+  
+  // Actions taken
+  matchPaused    Boolean @default(false)
+  requiresRematch Boolean @default(false)
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([matchId])
+  @@index([status])
+  @@index([severity])
+}
+
+model MatchHistory {
+  id       String @id @default(cuid())
+  matchId  String
+  match    Match  @relation(fields: [matchId], references: [id], onDelete: Cascade)
+
+  // History entry
+  action      String // score_updated, winner_changed, status_changed, paused, resumed, rolled_back
+  performedBy String // User ID (admin or team captain)
+  performedByRole String // admin, team_captain
+  
+  // Previous state
+  previousState Json?
+  newState      Json?
+  
+  reason String? @db.Text
+  
+  createdAt DateTime @default(now())
+
+  @@index([matchId])
+  @@index([createdAt])
+}
+
+model TeamStatus {
+  id     String @id @default(cuid())
+  teamId String @unique
+  team   Team   @relation(fields: [teamId], references: [id], onDelete: Cascade)
+
+  // Current status
+  status String @default("offline") // offline, online, ready, in_match, away
+  
+  // Match context
+  currentMatchId String?
+  lastSeenAt     DateTime @default(now())
+  
+  // Penalties
+  noShowCount    Int @default(0)
+  warningCount   Int @default(0)
+  isBanned       Boolean @default(false)
+  banReason      String? @db.Text
+  bannedUntil    DateTime?
+  
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([status])
+  @@index([currentMatchId])
+}
+
+model Notification {
+  id         String @id @default(cuid())
+  
+  // Target
+  recipientType String // admin, team, user
+  recipientId   String? // Team ID or User ID (null for all admins)
+  
+  // Content
+  type     String // match_starting, check_in_required, result_submitted, dispute_filed, issue_reported, intervention_needed
+  title    String
+  message  String @db.Text
+  priority String @default("normal") // low, normal, high, urgent
+  
+  // Context
+  tournamentId String?
+  matchId      String?
+  relatedUrl   String?
+  
+  // Status
+  read       Boolean   @default(false)
+  readAt     DateTime?
+  dismissed  Boolean   @default(false)
+  
+  createdAt DateTime @default(now())
+
+  @@index([recipientId, read])
+  @@index([type])
+  @@index([priority])
+  @@index([createdAt])
 }
 
 // ============================================
@@ -369,27 +502,6 @@ model FAQ {
 
   @@index([category])
   @@index([isPublished])
-}
-
-// ============================================
-// NOTIFICATION SYSTEM
-// ============================================
-
-model Notification {
-  id     String @id @default(cuid())
-  userId String
-  user   User   @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  title   String
-  message String  @db.Text
-  type    String // tournament, match, system
-  link    String?
-  isRead  Boolean @default(false)
-
-  createdAt DateTime @default(now())
-
-  @@index([userId])
-  @@index([isRead])
 }
 
 // ============================================
