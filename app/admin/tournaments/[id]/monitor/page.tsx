@@ -2,6 +2,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import LiveMatchMonitor from "@/components/admin/LiveMatchMonitor"
+import styles from "./page.module.css"
 
 export default async function LiveMonitorPage({
   params,
@@ -89,8 +90,8 @@ export default async function LiveMonitorPage({
             </div>
             <div className="w-full bg-gray-700 h-2 rounded-full mt-2 relative overflow-hidden">
               <div
-                className="absolute top-0 left-0 h-full bg-[#77010F] transition-all"
-                style={totalMatches > 0 ? { width: `${(completedMatches / totalMatches) * 100}%` } : { width: '0%' }}
+                className={`absolute top-0 left-0 h-full bg-[#77010F] transition-all ${styles.progressBar}`}
+                data-width={totalMatches > 0 ? Math.round((completedMatches / totalMatches) * 100) : 0}
               />
             </div>
           </div>

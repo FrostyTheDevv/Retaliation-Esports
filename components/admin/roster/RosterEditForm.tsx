@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { ArrowLeft, Save, X, Plus, Trash2, Edit2, GripVertical } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { DynamicColor } from "@/components/ui/DynamicColor"
 import styles from "./RosterEditForm.module.css"
 
 type Player = {
@@ -242,16 +243,13 @@ export default function RosterEditForm({ roster: initialRoster }: RosterEditForm
               <label className="block text-sm font-medium text-gray-400 mb-2">
                 Color Preview
               </label>
-              {/* eslint-disable-next-line no-inline-styles */}
-              <div
+              <DynamicColor
+                primaryColor={formData.primaryColor}
+                secondaryColor={formData.secondaryColor || undefined}
                 className={styles.colorPreview}
-                style={{
-                  '--primary-color': formData.primaryColor,
-                  '--secondary-color': formData.secondaryColor,
-                } as React.CSSProperties}
               >
                 {formData.name}
-              </div>
+              </DynamicColor>
             </div>
 
             {/* Description */}

@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma"
 import { Plus, Search } from "lucide-react"
 import Link from "next/link"
 import Image from "next/image"
+import { DynamicColor } from "@/components/ui/DynamicColor"
 import styles from "./page.module.css"
 
 async function getRosters() {
@@ -108,15 +109,10 @@ export default async function AdminRostersPage() {
               className="bg-gray-800 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors overflow-hidden group"
             >
               {/* Roster Header with Colors */}
-              {/* eslint-disable-next-line no-inline-styles */}
-              <div
+              <DynamicColor
+                primaryColor={roster.primaryColor}
+                secondaryColor={roster.secondaryColor || roster.primaryColor}
                 className={styles.rosterHeader}
-                style={
-                  {
-                    '--primary-color': roster.primaryColor,
-                    '--secondary-color': roster.secondaryColor || roster.primaryColor,
-                  } as React.CSSProperties
-                }
               >
                 {roster.image ? (
                   <Image
@@ -136,7 +132,7 @@ export default async function AdminRostersPage() {
                     Inactive
                   </div>
                 )}
-              </div>
+              </DynamicColor>
 
               {/* Roster Details */}
               <div className="p-6">

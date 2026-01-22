@@ -1,6 +1,7 @@
 import { prisma } from "@/lib/prisma"
 import Link from "next/link"
 import { Users } from "lucide-react"
+import { DynamicColor } from "@/components/ui/DynamicColor"
 import styles from "./page.module.css"
 
 async function getRosters() {
@@ -61,18 +62,15 @@ export default async function RostersPage() {
                 className="group bg-gray-800/50 rounded-xl border border-gray-700 hover:border-brand-primary transition-all overflow-hidden"
               >
                 {/* Roster Header with Colors */}
-                {/* eslint-disable-next-line no-inline-styles */}
-                <div
+                <DynamicColor
+                  primaryColor={roster.primaryColor}
+                  secondaryColor={roster.secondaryColor || roster.primaryColor}
                   className={styles.rosterHeader}
-                  style={{
-                    '--primary-color': roster.primaryColor,
-                    '--secondary-color': roster.secondaryColor || roster.primaryColor,
-                  } as React.CSSProperties}
                 >
                   <div className="text-5xl font-bold text-white opacity-90 group-hover:opacity-100 transition-opacity">
                     {roster.name.charAt(0)}
                   </div>
-                </div>
+                </DynamicColor>
 
                 {/* Roster Info */}
                 <div className="p-6">

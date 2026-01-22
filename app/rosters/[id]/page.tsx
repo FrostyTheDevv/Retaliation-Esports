@@ -3,6 +3,7 @@ import { notFound } from "next/navigation"
 import Link from "next/link"
 import Image from "next/image"
 import { ArrowLeft, Twitter, Twitch as TwitchIcon, Youtube, Instagram, MessageCircle, Gamepad2 } from "lucide-react"
+import { DynamicColor } from "@/components/ui/DynamicColor"
 import styles from "./page.module.css"
 
 async function getRoster(id: string) {
@@ -40,13 +41,10 @@ export default async function RosterDetailPage({
     /* eslint-disable-next-line suggestCanonicalClasses */
     <div className="min-h-screen bg-linear-to-b from-gray-900 to-black">
       {/* Hero Section with Roster Colors */}
-      {/* eslint-disable-next-line no-inline-styles */}
-      <div
+      <DynamicColor
+        primaryColor={roster.primaryColor}
+        secondaryColor={roster.secondaryColor || roster.primaryColor}
         className={styles.rosterHero}
-        style={{
-          '--primary-color': roster.primaryColor,
-          '--secondary-color': roster.secondaryColor || roster.primaryColor,
-        } as React.CSSProperties}
       >
         <div className="container mx-auto px-4 py-16">
           <Link
@@ -77,7 +75,7 @@ export default async function RosterDetailPage({
             </div>
           </div>
         </div>
-      </div>
+      </DynamicColor>
 
       {/* Players Section */}
       <div className="container mx-auto px-4 py-12">
