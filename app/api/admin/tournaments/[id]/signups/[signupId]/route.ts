@@ -7,14 +7,14 @@ const signupUpdateSchema = z.object({
   status: z.enum(["pending", "approved", "rejected"]),
 })
 
-// PATCH /api/admin/tournaments/[tournamentId]/signups/[signupId] - Update signup status
+// PATCH /api/admin/tournaments/[id]/signups/[signupId] - Update signup status
 export async function PATCH(
   request: NextRequest,
-  { params }: { params: Promise<{ tournamentId: string; signupId: string }> }
+  { params }: { params: Promise<{ id: string; signupId: string }> }
 ) {
   try {
     await requireAdmin()
-    const { tournamentId, signupId } = await params
+    const { id, signupId } = await params
 
     const body = await request.json()
     const validated = signupUpdateSchema.parse(body)
@@ -23,7 +23,7 @@ export async function PATCH(
     const signup = await prisma.tournamentSignup.findFirst({
       where: {
         id: signupId,
-        tournamentId,
+        tournamentId: id,
       },
     })
 
@@ -49,20 +49,20 @@ export async function PATCH(
   }
 }
 
-// DELETE /api/admin/tournaments/[tournamentId]/signups/[signupId] - Delete signup
+// DELETE /api/admin/tournaments/[id]/signups/[signupId] - Delete signup
 export async function DELETE(
   request: NextRequest,
-  { params }: { params: Promise<{ tournamentId: string; signupId: string }> }
+  { params }: { params: Promise<{ id: string; signupId: string }> }
 ) {
   try {
     await requireAdmin()
-    const { tournamentId, signupId } = await params
+    const { id, signupId } = await params
 
     // Verify signup belongs to tournament
     const signup = await prisma.tournamentSignup.findFirst({
       where: {
         id: signupId,
-        tournamentId,
+        tournamentId: id,
       },
     })
 

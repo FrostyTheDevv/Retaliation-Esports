@@ -82,7 +82,10 @@ export default async function TournamentDetailPage({ params }: PageProps) {
               {tournament.status.charAt(0).toUpperCase() + tournament.status.slice(1)}
             </span>
           </div>
-          <p className="text-gray-400">{tournament.description}</p>
+          <div 
+            className="text-gray-400 prose prose-invert max-w-none"
+            dangerouslySetInnerHTML={{ __html: tournament.description }}
+          />
         </div>
         <Link
           href={`/admin/tournaments/${id}/edit`}

@@ -93,7 +93,6 @@ export default function Home() {
       {/* Hero Section */}
       <section className="relative flex-1 flex items-center justify-center overflow-hidden pt-20">
         <div className="absolute inset-0 bg-linear-to-b from-[#77010F]/20 via-black to-black" />
-        <div className="absolute inset-0 bg-[url('/grid.svg')] opacity-20" />
         
         <div className="relative z-10 max-w-7xl mx-auto px-4 text-center">
           <h1 className="text-5xl md:text-7xl font-bold text-transparent bg-clip-text bg-linear-to-r from-[#77010F] to-white mb-8">
@@ -138,7 +137,7 @@ export default function Home() {
       </section>
 
       {/* Quick Links Section */}
-      <section className="py-24 px-4 bg-zinc-950">
+      <section className="py-24 px-4 bg-black">
         <div className="max-w-7xl mx-auto">
           <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-16">
             Quick Links
@@ -178,7 +177,7 @@ export default function Home() {
       </section>
 
       {/* Footer */}
-      <footer className="bg-zinc-950 border-t border-zinc-800 py-8 px-4">
+      <footer className="bg-black border-t border-[#77010F]/30 py-8 px-4">
         <div className="max-w-7xl mx-auto text-center">
           <p className="text-gray-400 mb-2">
             © {new Date().getFullYear()} Retaliation Esports. All rights reserved.

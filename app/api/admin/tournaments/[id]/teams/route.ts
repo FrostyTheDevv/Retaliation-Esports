@@ -22,6 +22,8 @@ export async function POST(
         playersInfo: body.playersInfo || [],
         status: "approved", // Manually added teams are auto-approved
         isVerified: true,
+        password: body.password || "", // Admin-added teams may not need password
+        username: body.username || null, // Optional username
       },
     })
 

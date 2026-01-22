@@ -2,11 +2,12 @@
 
 import { useState } from "react"
 import { useRouter } from "next/navigation"
-import { useForm } from "react-hook-form"
+import { useForm, Controller } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { z } from "zod"
-import { Upload, Loader2 } from "lucide-react"
-import { put } from "@vercel/blob"
+import { Loader2 } from "lucide-react"
+import { RichTextEditor } from "@/components/ui/RichTextEditor"
+import { FileUpload, MultipleFileUpload } from "@/components/ui/FileUpload"
 
 const tournamentSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters"),
@@ -37,22 +38,21 @@ const tournamentSchema = z.object({
 type TournamentFormData = z.infer<typeof tournamentSchema>
 
 interface TournamentFormProps {
-  initialData?: TournamentFormData & { id: string; bannerUrl?: string | null }
+  initialData?: TournamentFormData & { id: string; bannerUrl?: string | null; galleryImages?: string[] }
 }
 
 export default function TournamentForm({ initialData }: TournamentFormProps) {
   const router = useRouter()
   const [isSubmitting, setIsSubmitting] = useState(false)
-  const [bannerFile, setBannerFile] = useState<File | null>(null)
-  const [bannerPreview, setBannerPreview] = useState<string | null>(
-    initialData?.bannerUrl || null
-  )
+  const [bannerUrl, setBannerUrl] = useState<string | null>(initialData?.bannerUrl || null)
+  const [galleryUrls, setGalleryUrls] = useState<string[]>(initialData?.galleryImages || [])
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     setValue,
+    control,
   } = useForm<TournamentFormData>({
     resolver: zodResolver(tournamentSchema),
     defaultValues: initialData || {
@@ -78,35 +78,55 @@ export default function TournamentForm({ initialData }: TournamentFormProps) {
     },
   })
 
-  const handleBannerChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0]
-    if (file) {
-      setBannerFile(file)
-      const reader = new FileReader()
-      reader.onloadend = () => {
-        setBannerPreview(reader.result as string)
-      }
-      reader.readAsDataURL(file)
+  const handleBannerUpload = async (file: File): Promise<string> => {
+    const formData = new FormData()
+    formData.append("file", file)
+    formData.append("folder", "tournaments/banners")
+
+    const response = await fetch("/api/admin/upload", {
+      method: "POST",
+      body: formData,
+    })
+
+    if (!response.ok) {
+      throw new Error("Upload failed")
     }
+
+    const data = await response.json()
+    setBannerUrl(data.url)
+    return data.url
+  }
+
+  const handleGalleryUpload = async (files: File[]): Promise<string[]> => {
+    const urls: string[] = []
+    for (const file of files) {
+      const formData = new FormData()
+      formData.append("file", file)
+      formData.append("folder", "tournaments/gallery")
+
+      const response = await fetch("/api/admin/upload", {
+        method: "POST",
+        body: formData,
+      })
+
+      if (response.ok) {
+        const data = await response.json()
+        urls.push(data.url)
+      }
+    }
+    setGalleryUrls([...galleryUrls, ...urls])
+    return urls
   }
 
   const onSubmit = async (data: TournamentFormData) => {
     try {
       setIsSubmitting(true)
 
-      // Upload banner if new file selected
-      let bannerUrl = initialData?.bannerUrl
-      if (bannerFile) {
-        const blob = await put(bannerFile.name, bannerFile, {
-          token: process.env.NEXT_PUBLIC_BLOB_READ_WRITE_TOKEN!,
-        })
-        bannerUrl = blob.url
-      }
-
       const payload = {
         ...data,
         bannerUrl,
-        bannerImage: bannerUrl, // Map to schema field name
+        bannerImage: bannerUrl,
+        galleryImages: galleryUrls,
         maxTeams: Number(data.maxTeams),
         bestOf: Number(data.bestOf),
       }
@@ -144,31 +164,28 @@ export default function TournamentForm({ initialData }: TournamentFormProps) {
       {/* Banner Image */}
       <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
         <h2 className="text-xl font-semibold text-white mb-4">Tournament Banner</h2>
-        <div className="space-y-4">
-          {bannerPreview && (
-            <div className="relative w-full h-48 rounded-lg overflow-hidden">
-              <img
-                src={bannerPreview}
-                alt="Tournament banner preview"
-                className="w-full h-full object-cover"
-              />
-            </div>
-          )}
-          <label className="flex items-center justify-center w-full h-32 px-4 transition bg-zinc-800 border-2 border-zinc-700 border-dashed rounded-lg appearance-none cursor-pointer hover:border-[#77010F] focus:outline-none">
-            <div className="flex flex-col items-center space-y-2">
-              <Upload className="w-8 h-8 text-gray-400" />
-              <span className="text-sm text-gray-400">
-                {bannerFile ? bannerFile.name : "Click to upload banner image"}
-              </span>
-            </div>
-            <input
-              type="file"
-              accept="image/*"
-              className="hidden"
-              onChange={handleBannerChange}
-            />
-          </label>
-        </div>
+        <FileUpload
+          label="Banner Image"
+          onUpload={handleBannerUpload}
+          currentUrl={bannerUrl || undefined}
+          onRemove={() => setBannerUrl(null)}
+          accept="image/*"
+          maxSize={10}
+        />
+      </div>
+
+      {/* Gallery Images */}
+      <div className="bg-zinc-900 rounded-lg p-6 border border-zinc-800">
+        <h2 className="text-xl font-semibold text-white mb-4">Gallery Images</h2>
+        <MultipleFileUpload
+          label="Additional Images"
+          onUpload={handleGalleryUpload}
+          currentUrls={galleryUrls}
+          onRemove={(url) => setGalleryUrls(galleryUrls.filter((u) => u !== url))}
+          accept="image/*"
+          maxSize={10}
+          maxFiles={10}
+        />
       </div>
 
       {/* Basic Information */}
@@ -194,11 +211,16 @@ export default function TournamentForm({ initialData }: TournamentFormProps) {
             <label className="block text-sm font-medium text-gray-300 mb-2">
               Description *
             </label>
-            <textarea
-              {...register("description")}
-              rows={4}
-              className="w-full px-4 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white focus:outline-none focus:border-[#77010F]"
-              placeholder="Describe your tournament..."
+            <Controller
+              name="description"
+              control={control}
+              render={({ field }) => (
+                <RichTextEditor
+                  content={field.value}
+                  onChange={field.onChange}
+                  placeholder="Describe your tournament..."
+                />
+              )}
             />
             {errors.description && (
               <p className="mt-1 text-sm text-red-400">{errors.description.message}</p>

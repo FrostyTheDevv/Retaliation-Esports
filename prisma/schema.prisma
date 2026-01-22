@@ -206,6 +206,8 @@ model TournamentSignup {
   teamName       String
   captainEmail   String
   captainDiscord String?
+  password       String // Hashed password for signup authentication
+  username       String? // Optional username for team login
 
   // Players info
   playersInfo Json // Array of player details
