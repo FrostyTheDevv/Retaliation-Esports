@@ -3,6 +3,7 @@
 import { useState } from "react"
 import { useRouter } from "next/navigation"
 import { X, Loader2 } from "lucide-react"
+import { useUser } from "@/contexts/UserContext"
 
 interface RegisterButtonProps {
   tournamentId: string
@@ -10,6 +11,7 @@ interface RegisterButtonProps {
 
 export default function RegisterButton({ tournamentId }: RegisterButtonProps) {
   const router = useRouter()
+  const { user, loading: userLoading } = useUser()
   const [showModal, setShowModal] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState("")
@@ -17,13 +19,19 @@ export default function RegisterButton({ tournamentId }: RegisterButtonProps) {
 
   const [formData, setFormData] = useState({
     teamName: "",
-    username: "",
-    password: "",
-    confirmPassword: "",
-    captainEmail: "",
     captainDiscord: "",
+    playersInfo: "",
     acceptTerms: false,
   })
+
+  const handleButtonClick = () => {
+    if (!user) {
+      // Redirect to signin with return URL
+      router.push(`/signin?returnUrl=/tournaments/${tournamentId}`)
+      return
+    }
+    setShowModal(true)
+  }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -31,18 +39,6 @@ export default function RegisterButton({ tournamentId }: RegisterButtonProps) {
     setLoading(true)
 
     // Validation
-    if (formData.password !== formData.confirmPassword) {
-      setError("Passwords do not match")
-      setLoading(false)
-      return
-    }
-
-    if (formData.password.length < 8) {
-      setError("Password must be at least 8 characters")
-      setLoading(false)
-      return
-    }
-
     if (!formData.acceptTerms) {
       setError("You must accept the terms and conditions")
       setLoading(false)
@@ -57,10 +53,8 @@ export default function RegisterButton({ tournamentId }: RegisterButtonProps) {
         },
         body: JSON.stringify({
           teamName: formData.teamName,
-          username: formData.username,
-          password: formData.password,
-          captainEmail: formData.captainEmail,
           captainDiscord: formData.captainDiscord,
+          playersInfo: formData.playersInfo ? JSON.parse(formData.playersInfo) : [],
         }),
       })
 
@@ -73,7 +67,7 @@ export default function RegisterButton({ tournamentId }: RegisterButtonProps) {
       setSuccess(true)
       setTimeout(() => {
         setShowModal(false)
-        router.refresh()
+        router.push("/dashboard")
       }, 2000)
     } catch (err) {
       setError(err instanceof Error ? err.message : "Something went wrong")
@@ -82,13 +76,24 @@ export default function RegisterButton({ tournamentId }: RegisterButtonProps) {
     }
   }
 
+  if (userLoading) {
+    return (
+      <button
+        disabled
+        className="bg-gray-700 text-white font-bold py-3 px-8 rounded-lg cursor-not-allowed"
+      >
+        Loading...
+      </button>
+    )
+  }
+
   return (
     <>
       <button
-        onClick={() => setShowModal(true)}
+        onClick={handleButtonClick}
         className="bg-[#77010F] hover:bg-[#550008] text-white font-bold py-3 px-8 rounded-lg transition-colors"
       >
-        Register Now
+        {user ? "Register Now" : "Sign In to Register"}
       </button>
 
       {/* Modal */}
@@ -141,69 +146,19 @@ export default function RegisterButton({ tournamentId }: RegisterButtonProps) {
                   />
                 </div>
 
-                {/* Username */}
-                <div>
-                  <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
-                    Username <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="text"
-                    id="username"
-                    required
-                    value={formData.username}
-                    onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                    className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-[#77010F]"
-                    placeholder="Choose a username"
-                  />
-                  <p className="text-xs text-gray-400 mt-1">Use this to log in and manage your registration</p>
-                </div>
-
-                {/* Password */}
-                <div>
-                  <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
-                    Password <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    id="password"
-                    required
-                    value={formData.password}
-                    onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                    className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-[#77010F]"
-                    placeholder="Minimum 8 characters"
-                  />
-                </div>
-
-                {/* Confirm Password */}
-                <div>
-                  <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-300 mb-2">
-                    Confirm Password <span className="text-red-500">*</span>
-                  </label>
-                  <input
-                    type="password"
-                    id="confirmPassword"
-                    required
-                    value={formData.confirmPassword}
-                    onChange={(e) => setFormData({ ...formData, confirmPassword: e.target.value })}
-                    className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-[#77010F]"
-                    placeholder="Re-enter password"
-                  />
-                </div>
-
-                {/* Captain Email */}
+                {/* Captain Email (Pre-filled) */}
                 <div>
                   <label htmlFor="captainEmail" className="block text-sm font-medium text-gray-300 mb-2">
-                    Captain Email <span className="text-red-500">*</span>
+                    Captain Email
                   </label>
                   <input
                     type="email"
                     id="captainEmail"
-                    required
-                    value={formData.captainEmail}
-                    onChange={(e) => setFormData({ ...formData, captainEmail: e.target.value })}
-                    className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-[#77010F]"
-                    placeholder="captain@example.com"
+                    disabled
+                    value={user?.email || ""}
+                    className="w-full px-4 py-2 bg-gray-800 border border-gray-700 rounded-lg text-gray-400 cursor-not-allowed"
                   />
+                  <p className="text-xs text-gray-400 mt-1">Using your account email</p>
                 </div>
 
                 {/* Captain Discord */}
@@ -219,6 +174,21 @@ export default function RegisterButton({ tournamentId }: RegisterButtonProps) {
                     className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-[#77010F]"
                     placeholder="username#1234"
                   />
+                </div>
+
+                {/* Players Info */}
+                <div>
+                  <label htmlFor="playersInfo" className="block text-sm font-medium text-gray-300 mb-2">
+                    Player Information (Optional)
+                  </label>
+                  <textarea
+                    id="playersInfo"
+                    value={formData.playersInfo}
+                    onChange={(e) => setFormData({ ...formData, playersInfo: e.target.value })}
+                    className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-[#77010F] min-h-25"
+                    placeholder='Optional: Add player names and info as JSON array, e.g., [{"name": "Player1", "discord": "player1#1234"}]'
+                  />
+                  <p className="text-xs text-gray-400 mt-1">Leave blank if not needed</p>
                 </div>
 
                 {/* Terms */}
