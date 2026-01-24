@@ -125,7 +125,7 @@ export default function NewPlayerPage() {
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="Enter player's full name"
               />
             </div>
@@ -141,7 +141,7 @@ export default function NewPlayerPage() {
                   id="inGameName"
                   value={formData.inGameName}
                   onChange={(e) => setFormData({ ...formData, inGameName: e.target.value })}
-                  className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                  className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                   placeholder="e.g., ProPlayer123"
                 />
               </div>
@@ -156,7 +156,7 @@ export default function NewPlayerPage() {
                   id="role"
                   value={formData.role}
                   onChange={(e) => setFormData({ ...formData, role: e.target.value })}
-                  className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                  className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                   placeholder="e.g., Forward, Mid, Defense"
                 />
               </div>
@@ -172,7 +172,7 @@ export default function NewPlayerPage() {
                 rows={4}
                 value={formData.bio}
                 onChange={(e) => setFormData({ ...formData, bio: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary resize-none"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary resize-none"
                 placeholder="Write a brief bio about the player..."
               />
             </div>
@@ -187,7 +187,7 @@ export default function NewPlayerPage() {
                 id="image"
                 value={formData.image}
                 onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="https://example.com/player-photo.jpg"
               />
               <p className="text-sm text-gray-500 mt-1">
@@ -213,7 +213,7 @@ export default function NewPlayerPage() {
                 min="0"
                 value={formData.goals}
                 onChange={(e) => setFormData({ ...formData, goals: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="0"
               />
             </div>
@@ -229,7 +229,7 @@ export default function NewPlayerPage() {
                 min="0"
                 value={formData.assists}
                 onChange={(e) => setFormData({ ...formData, assists: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="0"
               />
             </div>
@@ -245,7 +245,7 @@ export default function NewPlayerPage() {
                 min="0"
                 value={formData.saves}
                 onChange={(e) => setFormData({ ...formData, saves: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="0"
               />
             </div>
@@ -267,7 +267,7 @@ export default function NewPlayerPage() {
                 id="twitter"
                 value={formData.twitter}
                 onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="https://twitter.com/username"
               />
             </div>
@@ -282,7 +282,7 @@ export default function NewPlayerPage() {
                 id="twitch"
                 value={formData.twitch}
                 onChange={(e) => setFormData({ ...formData, twitch: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="https://twitch.tv/username"
               />
             </div>
@@ -297,7 +297,7 @@ export default function NewPlayerPage() {
                 id="youtube"
                 value={formData.youtube}
                 onChange={(e) => setFormData({ ...formData, youtube: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="https://youtube.com/@username"
               />
             </div>
@@ -312,7 +312,7 @@ export default function NewPlayerPage() {
                 id="instagram"
                 value={formData.instagram}
                 onChange={(e) => setFormData({ ...formData, instagram: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="https://instagram.com/username"
               />
             </div>
@@ -327,7 +327,7 @@ export default function NewPlayerPage() {
                 id="discord"
                 value={formData.discord}
                 onChange={(e) => setFormData({ ...formData, discord: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="username#1234"
               />
             </div>
@@ -342,7 +342,7 @@ export default function NewPlayerPage() {
                 id="steam"
                 value={formData.steam}
                 onChange={(e) => setFormData({ ...formData, steam: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="https://steamcommunity.com/id/username"
               />
             </div>

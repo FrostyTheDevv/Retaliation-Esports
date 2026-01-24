@@ -15,19 +15,21 @@ datasource db {
 
 model User {
   id            String   @id @default(cuid())
-  discordId     String   @unique
-  username      String
+  discordId     String?  @unique // Optional - for Discord OAuth (admin only)
+  username      String   @unique // Required for all users
+  email         String   @unique // Required for all users
+  password      String? // Hashed password - null for Discord OAuth users
   discriminator String?
-  email         String?
   avatar        String?
-  guildRoles    String[] // Array of Discord role IDs
+  guildRoles    String[] // Array of Discord role IDs (admin only)
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
 
   // Relations
-  captainOfTeams  Team[]         @relation("TeamCaptain")
-  teamMemberships TeamMember[]
-  auditLogs       AuditLog[]
+  captainOfTeams      Team[]             @relation("TeamCaptain")
+  teamMemberships     TeamMember[]
+  auditLogs           AuditLog[]
+  tournamentSignups   TournamentSignup[] @relation("UserSignups")
 }
 
 // ============================================
@@ -199,15 +201,17 @@ model TournamentSignup {
   tournamentId String
   tournament   Tournament @relation(fields: [tournamentId], references: [id], onDelete: Cascade)
 
+  // User who registered (required)
+  userId String
+  user   User   @relation("UserSignups", fields: [userId], references: [id], onDelete: Cascade)
+
   teamId String?
   team   Team?   @relation(fields: [teamId], references: [id], onDelete: SetNull)
 
-  // Contact info
+  // Team info
   teamName       String
-  captainEmail   String
+  captainEmail   String // Redundant with user.email but kept for reference
   captainDiscord String?
-  password       String // Hashed password for signup authentication
-  username       String? // Optional username for team login
 
   // Players info
   playersInfo Json // Array of player details
@@ -227,6 +231,7 @@ model TournamentSignup {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
+  @@unique([tournamentId, userId]) // One signup per user per tournament
   @@unique([tournamentId, teamName])
   @@index([tournamentId])
   @@index([status])

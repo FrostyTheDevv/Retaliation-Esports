@@ -95,7 +95,7 @@ export default function NewRosterPage() {
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="Enter roster name (e.g., Rocket League Main Team)"
               />
             </div>
@@ -118,7 +118,7 @@ export default function NewRosterPage() {
                     type="text"
                     value={formData.primaryColor}
                     onChange={(e) => setFormData({ ...formData, primaryColor: e.target.value })}
-                    className="flex-1 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white font-mono focus:outline-none focus:border-brand-primary"
+                    className="flex-1 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white font-mono focus:outline-none focus:border-brand-primary"
                     placeholder="#FF4655"
                   />
                 </div>
@@ -140,7 +140,7 @@ export default function NewRosterPage() {
                     type="text"
                     value={formData.secondaryColor}
                     onChange={(e) => setFormData({ ...formData, secondaryColor: e.target.value })}
-                    className="flex-1 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white font-mono focus:outline-none focus:border-brand-primary"
+                    className="flex-1 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white font-mono focus:outline-none focus:border-brand-primary"
                     placeholder="#00D9FF"
                   />
                 </div>
@@ -171,7 +171,7 @@ export default function NewRosterPage() {
                 rows={4}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary resize-none"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary resize-none"
                 placeholder="Enter a brief description of this roster..."
               />
             </div>
@@ -186,7 +186,7 @@ export default function NewRosterPage() {
                 id="imageUrl"
                 value={formData.imageUrl}
                 onChange={(e) => setFormData({ ...formData, imageUrl: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
                 placeholder="https://example.com/logo.png"
               />
               <p className="text-sm text-gray-500 mt-1">
@@ -201,7 +201,7 @@ export default function NewRosterPage() {
                 id="isActive"
                 checked={formData.isActive}
                 onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-700 bg-gray-900 text-brand-primary focus:ring-brand-primary focus:ring-offset-gray-800"
+                className="w-5 h-5 rounded border-gray-700 bg-black text-brand-primary focus:ring-brand-primary focus:ring-offset-gray-800"
               />
               <label htmlFor="isActive" className="text-sm font-medium text-gray-300">
                 Active (visible on public roster page)

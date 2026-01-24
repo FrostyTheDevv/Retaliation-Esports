@@ -4,7 +4,7 @@ import { auth } from "@/lib/auth"
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: Promise<{ tournamentId: string; matchId: string }> }
+  { params }: { params: Promise<{ id: string; matchId: string }> }
 ) {
   try {
     const session = await auth()

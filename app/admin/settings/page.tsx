@@ -51,7 +51,7 @@ export default async function AdminSettingsPage() {
               value="Retaliation Esports"
               disabled
               aria-label="Site Name"
-              className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white cursor-not-allowed"
+              className="w-full px-3 py-2 bg-black border border-gray-700 rounded-lg text-white cursor-not-allowed"
             />
           </div>
           <div>
@@ -63,7 +63,7 @@ export default async function AdminSettingsPage() {
               value="retaliationesports.net"
               disabled
               aria-label="Domain"
-              className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white cursor-not-allowed"
+              className="w-full px-3 py-2 bg-black border border-gray-700 rounded-lg text-white cursor-not-allowed"
             />
           </div>
           <div>
@@ -75,7 +75,7 @@ export default async function AdminSettingsPage() {
               value="1456358951330513103"
               disabled
               aria-label="Discord Guild ID"
-              className="w-full px-3 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white cursor-not-allowed"
+              className="w-full px-3 py-2 bg-black border border-gray-700 rounded-lg text-white cursor-not-allowed"
             />
           </div>
         </div>

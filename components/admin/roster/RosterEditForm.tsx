@@ -183,7 +183,7 @@ export default function RosterEditForm({ roster: initialRoster }: RosterEditForm
                 required
                 value={formData.name}
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
               />
             </div>
 
@@ -208,7 +208,7 @@ export default function RosterEditForm({ roster: initialRoster }: RosterEditForm
                     onChange={(e) => setFormData({ ...formData, primaryColor: e.target.value })}
                     placeholder="#FF4655"
                     aria-label="Primary color hex value"
-                    className="flex-1 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white font-mono focus:outline-none focus:border-brand-primary"
+                    className="flex-1 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white font-mono focus:outline-none focus:border-brand-primary"
                   />
                 </div>
               </div>
@@ -232,7 +232,7 @@ export default function RosterEditForm({ roster: initialRoster }: RosterEditForm
                     onChange={(e) => setFormData({ ...formData, secondaryColor: e.target.value })}
                     placeholder="#00D9FF"
                     aria-label="Secondary color hex value"
-                    className="flex-1 px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white font-mono focus:outline-none focus:border-brand-primary"
+                    className="flex-1 px-4 py-2 bg-black border border-gray-700 rounded-lg text-white font-mono focus:outline-none focus:border-brand-primary"
                   />
                 </div>
               </div>
@@ -262,7 +262,7 @@ export default function RosterEditForm({ roster: initialRoster }: RosterEditForm
                 rows={4}
                 value={formData.description}
                 onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary resize-none"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary resize-none"
               />
             </div>
 
@@ -276,7 +276,7 @@ export default function RosterEditForm({ roster: initialRoster }: RosterEditForm
                 id="image"
                 value={formData.image}
                 onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                className="w-full px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+                className="w-full px-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
               />
             </div>
 
@@ -287,7 +287,7 @@ export default function RosterEditForm({ roster: initialRoster }: RosterEditForm
                 id="isActive"
                 checked={formData.isActive}
                 onChange={(e) => setFormData({ ...formData, isActive: e.target.checked })}
-                className="w-5 h-5 rounded border-gray-700 bg-gray-900"
+                className="w-5 h-5 rounded border-gray-700 bg-black"
               />
               <label htmlFor="isActive" className="text-sm font-medium text-gray-300">
                 Active (visible on public roster page)

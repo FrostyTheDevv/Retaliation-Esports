@@ -76,7 +76,7 @@ export function RichTextEditor({
   }
 
   return (
-    <div className="border border-gray-700 rounded-lg overflow-hidden bg-gray-900">
+    <div className="border border-gray-700 rounded-lg overflow-hidden bg-black">
       {/* Toolbar */}
       <div className="flex items-center gap-1 p-2 border-b border-gray-700 bg-gray-800 flex-wrap">
         <button
@@ -161,7 +161,8 @@ export function RichTextEditor({
       </div>
 
       {/* Editor Content */}
-      <EditorContent editor={editor} className="bg-gray-900 text-white" />
+      <EditorContent editor={editor} className="bg-black text-white" />
     </div>
   )
 }
+

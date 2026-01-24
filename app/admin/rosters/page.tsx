@@ -58,12 +58,12 @@ export default async function AdminRostersPage() {
             <input
               type="text"
               placeholder="Search rosters..."
-              className="w-full pl-10 pr-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
+              className="w-full pl-10 pr-4 py-2 bg-black border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:border-brand-primary"
             />
           </div>
           <select 
             aria-label="Filter by status"
-            className="px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-brand-primary"
+            className="px-4 py-2 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-brand-primary"
           >
             <option value="all">All Status</option>
             <option value="active">Active</option>
@@ -71,7 +71,7 @@ export default async function AdminRostersPage() {
           </select>
           <select 
             aria-label="Sort by"
-            className="px-4 py-2 bg-gray-900 border border-gray-700 rounded-lg text-white focus:outline-none focus:border-brand-primary"
+            className="px-4 py-2 bg-black border border-gray-700 rounded-lg text-white focus:outline-none focus:border-brand-primary"
           >
             <option value="newest">Newest First</option>
             <option value="oldest">Oldest First</option>
