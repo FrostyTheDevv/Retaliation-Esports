@@ -2,6 +2,8 @@ import Link from "next/link"
 import { prisma } from "@/lib/prisma"
 import DisputeCard from "@/components/admin/DisputeCard"
 
+export const dynamic = 'force-dynamic'
+
 export default async function DisputesPage() {
   const disputes = await prisma.dispute.findMany({
     include: {

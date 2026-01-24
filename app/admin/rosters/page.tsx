@@ -6,6 +6,8 @@ import Image from "next/image"
 import { DynamicColor } from "@/components/ui/DynamicColor"
 import styles from "./page.module.css"
 
+export const dynamic = 'force-dynamic'
+
 async function getRosters() {
   try {
     const rosters = await prisma.roster.findMany({

@@ -4,6 +4,8 @@ import { requireAdmin } from "@/lib/auth-utils"
 import { Plus, Calendar, Users, Trophy } from "lucide-react"
 import { format } from "date-fns"
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminTournamentsPage() {
   await requireAdmin()
 

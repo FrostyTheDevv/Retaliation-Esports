@@ -75,7 +75,7 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
 
         if (dbUser) {
           session.user.id = dbUser.id
-          session.user.discordId = dbUser.discordId
+          session.user.discordId = dbUser.discordId || undefined
           session.user.guildRoles = dbUser.guildRoles
         }
       }

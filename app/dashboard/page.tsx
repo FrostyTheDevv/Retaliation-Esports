@@ -4,6 +4,8 @@ import { getUserSession } from "@/lib/user-auth"
 import { prisma } from "@/lib/prisma"
 import SignOutButton from "@/components/auth/SignOutButton"
 
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
   const session = await getUserSession()
 

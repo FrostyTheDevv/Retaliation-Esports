@@ -1,6 +1,8 @@
 import { getCurrentUser } from "@/lib/auth-utils"
 import { prisma } from "@/lib/prisma"
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminSettingsPage() {
   const user = await getCurrentUser()
 

@@ -8,6 +8,8 @@ import {
   TrendingUp 
 } from "lucide-react"
 
+export const dynamic = 'force-dynamic'
+
 async function getDashboardStats() {
   const [
     totalRosters,

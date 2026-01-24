@@ -1,10 +1,10 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, Suspense } from "react"
 import { useRouter, useSearchParams } from "next/navigation"
 import Link from "next/link"
 
-export default function SigninPage() {
+function SigninForm() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const [formData, setFormData] = useState({
@@ -219,5 +219,13 @@ export default function SigninPage() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function SigninPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <SigninForm />
+    </Suspense>
   )
 }

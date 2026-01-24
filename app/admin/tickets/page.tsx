@@ -1,5 +1,7 @@
 import { getCurrentUser } from "@/lib/auth-utils"
 
+export const dynamic = 'force-dynamic'
+
 export default async function AdminTicketsPage() {
   const user = await getCurrentUser()
 
