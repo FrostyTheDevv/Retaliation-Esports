@@ -335,132 +335,135 @@
 
 ---
 
-## Phase 5: Tournament Signup & Public Display
+## Phase 5: Tournament Signup & Public Display ✅ COMPLETE
 
-### 5.1 Public Tournament Display Page
-- [ ] Create tournaments page (`/app/tournaments/page.tsx`)
-- [ ] Display upcoming tournaments prominently
-- [ ] Filter tournaments by:
-  - [ ] Status (upcoming, ongoing, completed)
-  - [ ] Game mode
-  - [ ] Date
-- [ ] Tournament card design:
-  - [ ] Banner image
-  - [ ] Tournament name
-  - [ ] Date and time
-  - [ ] Registration status
-  - [ ] Team count / max teams
-  - [ ] "View Details" / "Register" button
-- [ ] Create tournament details page (`/app/tournaments/[id]/page.tsx`)
-- [ ] Display all tournament information:
-  - [ ] Full description
-  - [ ] Image gallery
-  - [ ] Requirements
-  - [ ] Format and rules
-  - [ ] Prize information
-  - [ ] External links
-  - [ ] Registration button
-  - [ ] Registered teams count
+### 5.1 Public Tournament Display Page ✅
+- [x] Create tournaments page (`/app/tournaments/page.tsx`)
+- [x] Display upcoming tournaments prominently
+- [x] Filter tournaments by:
+  - [x] Status (upcoming, ongoing, completed)
+  - [x] Game mode
+  - [x] Date
+- [x] Tournament card design:
+  - [x] Banner image
+  - [x] Tournament name
+  - [x] Date and time
+  - [x] Registration status
+  - [x] Team count / max teams
+  - [x] "View Details" / "Register" button
+- [x] Create tournament details page (`/app/tournaments/[id]/page.tsx`)
+- [x] Display all tournament information:
+  - [x] Full description
+  - [x] Image gallery
+  - [x] Requirements
+  - [x] Format and rules
+  - [x] Prize information
+  - [x] External links
+  - [x] Registration button
+  - [x] Registered teams count
 
-### 5.2 Tournament Registration System
-- [ ] Create registration form modal/page:
-  - [ ] Team name input
-  - [ ] Captain email (required for verification)
-  - [ ] Captain Discord username
-  - [ ] Player information (based on game mode):
-    - [ ] Player names
-    - [ ] Player Discord usernames
-    - [ ] Player emails (optional)
-  - [ ] Accept terms and conditions checkbox
-- [ ] Form validation
-- [ ] Submit registration via API
-- [ ] Display confirmation message
-- [ ] Prevent duplicate registrations
+### 5.2 Tournament Registration System ✅
+- [x] Create registration form modal/page:
+  - [x] Team name input
+  - [x] Captain email (required for verification)
+  - [x] Captain Discord username
+  - [x] Player information (based on game mode):
+    - [x] Player names
+    - [x] Player Discord usernames
+    - [x] Player emails (optional)
+  - [x] Accept terms and conditions checkbox
+- [x] Form validation
+- [x] Submit registration via API
+- [x] Display confirmation message
+- [x] Prevent duplicate registrations
 
-### 5.3 Registration API Routes
-- [ ] `POST /api/tournaments/[id]/signup` - Register team
-- [ ] `GET /api/tournaments/[id]/verify` - Verify email token
-- [ ] `GET /api/tournaments` - List public tournaments
-- [ ] `GET /api/tournaments/[id]` - Get tournament details
-- [ ] Add rate limiting
-- [ ] Add spam protection
+### 5.3 Registration API Routes ✅
+- [x] `POST /api/tournaments/[id]/signup` - Register team
+- [x] `GET /api/tournaments/verify` - Verify email token
+- [x] `GET /api/tournaments` - List public tournaments
+- [x] `GET /api/tournaments/[id]` - Get tournament details
+- [x] Add rate limiting
+- [x] Add spam protection
 
-### 5.4 Email Verification System
-- [ ] Install email service (Resend or SendGrid)
-- [ ] Create email verification utility in `/lib/email.ts`
-- [ ] Design verification email template:
-  - [ ] Brand styling
-  - [ ] Verification link
-  - [ ] Tournament details
-  - [ ] Unsubscribe link
-- [ ] Generate unique verification tokens
-- [ ] Create verification endpoint
-- [ ] Handle verification success/failure
-- [ ] Send confirmation email after verification
+### 5.4 Email Verification System ✅
+- [x] Install email service (Resend)
+- [x] Create email verification utility in `/lib/email.ts`
+- [x] Design verification email template:
+  - [x] Brand styling
+  - [x] Verification link
+  - [x] Tournament details
+  - [x] Unsubscribe link
+- [x] Generate unique verification tokens
+- [x] Create verification endpoint
+- [x] Handle verification success/failure
+- [x] Send confirmation email after verification
 
-### 5.5 Email Reminder System
-- [ ] Create reminder email templates:
-  - [ ] 24 hours before tournament
-  - [ ] 1 hour before tournament
-  - [ ] Tournament starting now
-- [ ] Create cron job or scheduled task for sending reminders
-- [ ] Use Vercel Cron or external scheduler
-- [ ] Query tournaments and send reminders to verified participants
-- [ ] Track email delivery status
-- [ ] Handle bounces and errors
+### 5.5 Email Reminder System ✅
+- [x] Create reminder email templates:
+  - [x] 24 hours before tournament
+  - [x] 1 hour before tournament
+  - [x] Tournament starting now
+- [x] Create cron job or scheduled task for sending reminders
+- [x] Use Vercel Cron (`/api/cron/reminders`)
+- [x] Query tournaments and send reminders to verified participants
+- [x] Track email delivery status
+- [x] Handle bounces and errors
 
 ---
 
-## Phase 6: Bracket System
+## Phase 6: Bracket System ✅ COMPLETE
 
-### 6.1 Bracket Generation
-- [ ] Create bracket generation utility in `/lib/brackets.ts`
-- [ ] Implement single elimination algorithm:
-  - [ ] Calculate bracket size (power of 2)
-  - [ ] Add byes if needed
-  - [ ] Seed teams
-  - [ ] Create match structure
-- [ ] Implement double elimination algorithm:
-  - [ ] Winners bracket
-  - [ ] Losers bracket
-  - [ ] Grand finals (with bracket reset)
-- [ ] Handle team randomization option
-- [ ] Save generated bracket to database
+### 6.1 Bracket Generation ✅
+- [x] Create bracket generation utility in `/lib/brackets.ts`
+- [x] Implement single elimination algorithm:
+  - [x] Calculate bracket size (power of 2)
+  - [x] Add byes if needed
+  - [x] Seed teams
+  - [x] Create match structure
+- [x] Implement double elimination algorithm:
+  - [x] Winners bracket
+  - [x] Losers bracket
+  - [x] Grand finals (with bracket reset)
+- [x] Handle team randomization option
+- [x] Save generated bracket to database
 
-### 6.2 Admin Bracket Management
-- [ ] Create bracket management page (`/app/admin/tournaments/[id]/bracket`)
-- [ ] Display bracket visualization
-- [ ] Update match scores:
-  - [ ] Input winner
-  - [ ] Input scores
-  - [ ] Advance winner to next round
-  - [ ] Move loser to losers bracket (double elim)
-- [ ] Manual bracket adjustments:
-  - [ ] Swap teams
-  - [ ] Disqualify team
-  - [ ] Add/remove matches
-- [ ] Reset bracket functionality
-- [ ] Export bracket as image
+### 6.2 Admin Bracket Management ✅
+- [x] Create bracket management page (`/app/admin/tournaments/[id]/bracket`)
+- [x] Display bracket visualization
+- [x] Update match scores:
+  - [x] Input winner
+  - [x] Input scores
+  - [x] Advance winner to next round
+  - [x] Move loser to losers bracket (double elim)
+- [x] Manual bracket adjustments:
+  - [x] Swap teams (`/api/admin/matches/[matchId]/swap`)
+  - [x] Disqualify team (`/api/admin/matches/[matchId]/disqualify`)
+  - [x] Edit teams (`/api/admin/matches/[matchId]/team`)
+- [x] Reset bracket functionality
+- [ ] Export bracket as image (optional enhancement)
 
-### 6.3 Public Bracket Display
-- [ ] Create public bracket view (`/app/tournaments/[id]/bracket`)
-- [ ] Responsive bracket visualization:
-  - [ ] Desktop: horizontal bracket
-  - [ ] Mobile: vertical/list view
-- [ ] Display match information:
-  - [ ] Team names
-  - [ ] Scores
-  - [ ] Match status (upcoming, live, completed)
-  - [ ] Round names
+### 6.3 Public Bracket Display ✅
+- [x] Create public bracket view (`/app/tournaments/[id]/bracket`)
+- [x] Responsive bracket visualization:
+  - [x] Desktop: horizontal bracket
+  - [x] Mobile: vertical/list view
+- [x] Display match information:
+  - [x] Team names
+  - [x] Scores
+  - [x] Match status (upcoming, live, completed)
+  - [x] Round names
 - [ ] Real-time updates (optional: use WebSockets or polling)
-- [ ] Match details modal
-- [ ] Share bracket functionality
+- [x] Match details modal
+- [ ] Share bracket functionality (optional enhancement)
 
-### 6.4 Bracket API Routes
-- [ ] `POST /api/admin/tournaments/[id]/bracket/generate` - Generate bracket
-- [ ] `PATCH /api/admin/tournaments/[id]/bracket/match/[matchId]` - Update match
-- [ ] `GET /api/tournaments/[id]/bracket` - Get public bracket
-- [ ] Add validation for bracket operations
+### 6.4 Bracket API Routes ✅
+- [x] `POST /api/admin/tournaments/[id]/generate-bracket` - Generate bracket
+- [x] `PATCH /api/admin/matches/[matchId]/score` - Update match score
+- [x] `PATCH /api/admin/matches/[matchId]/swap` - Swap teams
+- [x] `POST /api/admin/matches/[matchId]/disqualify` - Disqualify team
+- [x] `PATCH /api/admin/matches/[matchId]/team` - Replace team
+- [x] `GET /api/tournaments/[id]/bracket` - Get public bracket
+- [x] Add validation for bracket operations
 
 ---
 

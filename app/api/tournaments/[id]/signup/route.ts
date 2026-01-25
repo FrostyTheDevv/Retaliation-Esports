@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server"
 import { z } from "zod"
 import { prisma } from "@/lib/prisma"
 import { getUserSession } from "@/lib/user-auth"
+import { generateVerificationToken, sendVerificationEmail } from "@/lib/email"
 
 const signupSchema = z.object({
   teamName: z.string().min(1, "Team name is required").max(100),
@@ -108,7 +109,9 @@ export async function POST(
       )
     }
 
-    // Create signup
+    // Create signup with verification token
+    const verificationToken = generateVerificationToken()
+    
     const signup = await prisma.tournamentSignup.create({
       data: {
         tournamentId,
@@ -119,8 +122,17 @@ export async function POST(
         playersInfo: playersInfo || [],
         status: "pending",
         isVerified: false,
+        verificationToken,
       },
     })
+
+    // Send verification email
+    await sendVerificationEmail(
+      session.user.email,
+      teamName,
+      tournament.name,
+      verificationToken
+    )
 
     // Fetch tournament name for response
     const tournamentData = await prisma.tournament.findUnique({
@@ -130,7 +142,7 @@ export async function POST(
 
     return NextResponse.json(
       {
-        message: "Registration successful! Please wait for admin approval.",
+        message: "Registration successful! Please check your email to verify your registration.",
         signup: {
           id: signup.id,
           teamName: signup.teamName,

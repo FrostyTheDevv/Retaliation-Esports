@@ -38,6 +38,8 @@ export default function BracketVisualization({
   const [score1, setScore1] = useState("")
   const [score2, setScore2] = useState("")
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showActions, setShowActions] = useState(false)
+  const [dqReason, setDqReason] = useState("")
 
   // Group matches by round
   const structure = bracketData.structure || []
@@ -100,6 +102,44 @@ export default function BracketVisualization({
       router.refresh()
     } catch (error) {
       alert("Failed to submit score")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  async function handleSwapTeams(matchId: string) {
+    setIsSubmitting(true)
+    try {
+      const response = await fetch(`/api/admin/matches/${matchId}/swap`, {
+        method: "PATCH",
+      })
+      if (!response.ok) throw new Error("Failed to swap teams")
+      alert("Teams swapped successfully")
+      setSelectedMatch(null)
+      router.refresh()
+    } catch (error) {
+      alert("Failed to swap teams")
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  async function handleDisqualify(matchId: string, teamId: string) {
+    if (!confirm("Are you sure you want to disqualify this team?")) return
+    setIsSubmitting(true)
+    try {
+      const response = await fetch(`/api/admin/matches/${matchId}/disqualify`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ teamId, reason: dqReason }),
+      })
+      if (!response.ok) throw new Error("Failed to disqualify team")
+      alert("Team disqualified")
+      setSelectedMatch(null)
+      setDqReason("")
+      router.refresh()
+    } catch (error) {
+      alert("Failed to disqualify team")
     } finally {
       setIsSubmitting(false)
     }
@@ -230,55 +270,125 @@ export default function BracketVisualization({
               </div>
             ) : (
               <div>
-                {/* Team 1 Score */}
-                <div className="mb-4">
-                  <label className="block text-sm text-gray-400 mb-2">
-                    {selectedMatch.team1?.name || "Team 1"} Score
-                  </label>
-                  <input
-                    type="number"
-                    value={score1}
-                    onChange={(e) => setScore1(e.target.value)}
-                    className="w-full px-4 py-2 bg-gray-700 text-white rounded"
-                    placeholder="0"
-                    min="0"
-                  />
-                </div>
+                {!showActions ? (
+                  <>
+                    {/* Team 1 Score */}
+                    <div className="mb-4">
+                      <label className="block text-sm text-gray-400 mb-2">
+                        {selectedMatch.team1?.name || "Team 1"} Score
+                      </label>
+                      <input
+                        type="number"
+                        value={score1}
+                        onChange={(e) => setScore1(e.target.value)}
+                        className="w-full px-4 py-2 bg-gray-700 text-white rounded"
+                        placeholder="0"
+                        min="0"
+                      />
+                    </div>
 
-                {/* Team 2 Score */}
-                <div className="mb-6">
-                  <label className="block text-sm text-gray-400 mb-2">
-                    {selectedMatch.team2?.name || "Team 2"} Score
-                  </label>
-                  <input
-                    type="number"
-                    value={score2}
-                    onChange={(e) => setScore2(e.target.value)}
-                    className="w-full px-4 py-2 bg-gray-700 text-white rounded"
-                    placeholder="0"
-                    min="0"
-                  />
-                </div>
+                    {/* Team 2 Score */}
+                    <div className="mb-6">
+                      <label className="block text-sm text-gray-400 mb-2">
+                        {selectedMatch.team2?.name || "Team 2"} Score
+                      </label>
+                      <input
+                        type="number"
+                        value={score2}
+                        onChange={(e) => setScore2(e.target.value)}
+                        className="w-full px-4 py-2 bg-gray-700 text-white rounded"
+                        placeholder="0"
+                        min="0"
+                      />
+                    </div>
 
-                <div className="flex gap-2">
-                  <button
-                    onClick={() => handleScoreSubmit(selectedMatch.id)}
-                    disabled={isSubmitting}
-                    className="flex-1 px-4 py-2 bg-[#77010F] text-white rounded hover:bg-[#5a0008] disabled:opacity-50"
-                  >
-                    {isSubmitting ? "Submitting..." : "Submit Score"}
-                  </button>
-                  <button
-                    onClick={() => {
-                      setSelectedMatch(null)
-                      setScore1("")
-                      setScore2("")
-                    }}
-                    className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
-                  >
-                    Cancel
-                  </button>
-                </div>
+                    <div className="flex gap-2 mb-4">
+                      <button
+                        onClick={() => handleScoreSubmit(selectedMatch.id)}
+                        disabled={isSubmitting}
+                        className="flex-1 px-4 py-2 bg-[#77010F] text-white rounded hover:bg-[#5a0008] disabled:opacity-50"
+                      >
+                        {isSubmitting ? "Submitting..." : "Submit Score"}
+                      </button>
+                      <button
+                        onClick={() => {
+                          setSelectedMatch(null)
+                          setScore1("")
+                          setScore2("")
+                        }}
+                        className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+                      >
+                        Cancel
+                      </button>
+                    </div>
+                    
+                    <button
+                      onClick={() => setShowActions(true)}
+                      className="w-full px-4 py-2 bg-zinc-700 text-white rounded hover:bg-zinc-600 text-sm"
+                    >
+                      More Actions (Swap, DQ, Edit)
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    {/* More Actions Panel */}
+                    <div className="space-y-4">
+                      {/* Swap Teams */}
+                      <div className="p-4 bg-gray-700 rounded-lg">
+                        <h4 className="font-semibold mb-2">Swap Teams</h4>
+                        <p className="text-sm text-gray-400 mb-3">
+                          Switch the positions of {selectedMatch.team1?.name || "Team 1"} and {selectedMatch.team2?.name || "Team 2"}
+                        </p>
+                        <button
+                          onClick={() => handleSwapTeams(selectedMatch.id)}
+                          disabled={isSubmitting}
+                          className="w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 disabled:opacity-50"
+                        >
+                          Swap Teams
+                        </button>
+                      </div>
+
+                      {/* Disqualify Team */}
+                      <div className="p-4 bg-gray-700 rounded-lg">
+                        <h4 className="font-semibold mb-2">Disqualify Team</h4>
+                        <input
+                          type="text"
+                          value={dqReason}
+                          onChange={(e) => setDqReason(e.target.value)}
+                          placeholder="Reason for disqualification"
+                          className="w-full px-4 py-2 bg-gray-800 text-white rounded mb-3"
+                        />
+                        <div className="flex gap-2">
+                          {selectedMatch.team1Id && (
+                            <button
+                              onClick={() => handleDisqualify(selectedMatch.id, selectedMatch.team1Id!)}
+                              disabled={isSubmitting}
+                              className="flex-1 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 text-sm"
+                            >
+                              DQ {selectedMatch.team1?.name}
+                            </button>
+                          )}
+                          {selectedMatch.team2Id && (
+                            <button
+                              onClick={() => handleDisqualify(selectedMatch.id, selectedMatch.team2Id!)}
+                              disabled={isSubmitting}
+                              className="flex-1 px-4 py-2 bg-red-600 text-white rounded hover:bg-red-700 disabled:opacity-50 text-sm"
+                            >
+                              DQ {selectedMatch.team2?.name}
+                            </button>
+                          )}
+                        </div>
+                      </div>
+
+                      <button
+                        onClick={() => setShowActions(false)}
+                        className="w-full px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+                      >
+                        Back to Scores
+                      </button>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
