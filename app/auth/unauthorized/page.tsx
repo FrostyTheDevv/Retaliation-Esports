@@ -9,7 +9,7 @@ export default async function UnauthorizedPage() {
   return (
     <div className="min-h-screen flex items-center justify-center bg-black">
       {/* Background gradient */}
-      <div className="fixed inset-0 bg-gradient-to-b from-[#77010F]/20 via-black to-black pointer-events-none" />
+      <div className="fixed inset-0 bg-linear-to-b from-[#77010F]/20 via-black to-black pointer-events-none" />
       
       <div className="max-w-md w-full mx-4 relative z-10">
         <div className="bg-zinc-900 rounded-lg shadow-xl p-8 border border-zinc-800 text-center">

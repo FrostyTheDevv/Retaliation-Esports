@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Trophy, Users, Calendar, Menu } from "lucide-react";
+import { Trophy, Users, Calendar, Menu, ShoppingBag } from "lucide-react";
 
 export default function Home() {
   return (
@@ -44,6 +44,14 @@ export default function Home() {
               View Tournaments
             </Link>
             <a
+              href="https://shop.retaliationesports.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-white transition-colors hidden md:block"
+            >
+              Shop
+            </a>
+            <a
               href="https://discord.gg/grp3xuqHBV"
               target="_blank"
               rel="noopener noreferrer"
@@ -76,6 +84,14 @@ export default function Home() {
                 >
                   View Tournaments
                 </Link>
+                <a
+                  href="https://shop.retaliationesports.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block px-4 py-3 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors"
+                >
+                  Shop
+                </a>
                 <a
                   href="https://discord.gg/grp3xuqHBV"
                   target="_blank"
@@ -132,6 +148,15 @@ export default function Home() {
             >
               Join Discord
             </a>
+            <a
+              href="https://shop.retaliationesports.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="px-8 py-4 bg-[#77010F] text-white font-semibold rounded-lg hover:bg-[#5A010C] transition-all flex items-center gap-2 justify-center"
+            >
+              <ShoppingBag className="w-5 h-5" />
+              Shop Now
+            </a>
           </div>
         </div>
       </section>
@@ -142,7 +167,7 @@ export default function Home() {
           <h2 className="text-4xl md:text-5xl font-bold text-white text-center mb-16">
             Quick Links
           </h2>
-          <div className="grid md:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             <Link href="/rosters" className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-[#77010F] transition-colors group">
               <div className="w-12 h-12 bg-linear-to-br from-[#77010F] to-black rounded-lg flex items-center justify-center mb-4">
                 <Users className="w-6 h-6 text-white" />
@@ -172,6 +197,16 @@ export default function Home() {
                 Stay updated with match schedules, tournaments, and community events.
               </p>
             </Link>
+
+            <a href="https://shop.retaliationesports.com" target="_blank" rel="noopener noreferrer" className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-[#77010F] transition-colors group">
+              <div className="w-12 h-12 bg-linear-to-br from-[#77010F] to-black rounded-lg flex items-center justify-center mb-4">
+                <ShoppingBag className="w-6 h-6 text-white" />
+              </div>
+              <h3 className="text-xl font-semibold text-white mb-2">Shop</h3>
+              <p className="text-gray-400">
+                Get official Retaliation Esports merchandise and gear.
+              </p>
+            </a>
           </div>
         </div>
       </section>
