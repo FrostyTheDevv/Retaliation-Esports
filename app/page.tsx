@@ -44,7 +44,7 @@ export default function Home() {
               View Tournaments
             </Link>
             <a
-              href="https://shop.retaliationesports.com"
+              href="https://shop.retaliationesports.net"
               target="_blank"
               rel="noopener noreferrer"
               className="text-gray-300 hover:text-white transition-colors hidden md:block"
@@ -85,7 +85,7 @@ export default function Home() {
                   View Tournaments
                 </Link>
                 <a
-                  href="https://shop.retaliationesports.com"
+                  href="https://shop.retaliationesports.net"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="block px-4 py-3 text-gray-300 hover:bg-zinc-800 hover:text-white transition-colors"
@@ -149,13 +149,12 @@ export default function Home() {
               Join Discord
             </a>
             <a
-              href="https://shop.retaliationesports.com"
+              href="https://shop.retaliationesports.net"
               target="_blank"
               rel="noopener noreferrer"
-              className="px-8 py-4 bg-[#77010F] text-white font-semibold rounded-lg hover:bg-[#5A010C] transition-all flex items-center gap-2 justify-center"
+              className="px-8 py-4 border-2 border-[#77010F] text-[#77010F] font-semibold rounded-lg hover:bg-[#77010F]/10 transition-all"
             >
-              <ShoppingBag className="w-5 h-5" />
-              Shop Now
+              Shop Merch
             </a>
           </div>
         </div>
@@ -198,7 +197,7 @@ export default function Home() {
               </p>
             </Link>
 
-            <a href="https://shop.retaliationesports.com" target="_blank" rel="noopener noreferrer" className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-[#77010F] transition-colors group">
+            <a href="https://shop.retaliationesports.net" target="_blank" rel="noopener noreferrer" className="p-6 bg-zinc-900 rounded-xl border border-zinc-800 hover:border-[#77010F] transition-colors group">
               <div className="w-12 h-12 bg-linear-to-br from-[#77010F] to-black rounded-lg flex items-center justify-center mb-4">
                 <ShoppingBag className="w-6 h-6 text-white" />
               </div>
