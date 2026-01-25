@@ -123,10 +123,11 @@ export async function checkAdmin() {
     throw new Error("Unauthorized")
   }
 
-  const adminRoleIds = process.env.ADMIN_ROLE_IDS?.split(",") || []
-  const userRoles = (session.user as any).guildRoles || []
+  // DISCORD_ADMIN_ROLE_IDS contains Discord user IDs, not role IDs
+  const adminUserIds = process.env.DISCORD_ADMIN_ROLE_IDS?.split(",") || []
+  const userDiscordId = (session.user as any).discordId
   
-  const isAdmin = adminRoleIds.some((roleId) => userRoles.includes(roleId))
+  const isAdmin = adminUserIds.includes(userDiscordId)
   
   if (!isAdmin) {
     throw new Error("Forbidden - Admin access required")

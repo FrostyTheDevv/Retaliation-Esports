@@ -10,17 +10,18 @@ export async function isAuthenticated() {
 }
 
 /**
- * Check if user has admin access based on Discord roles
+ * Check if user has admin access based on Discord user ID
  */
 export async function isAdmin() {
   const session = await auth()
   
-  if (!session?.user?.guildRoles) {
+  if (!session?.user?.discordId) {
     return false
   }
 
-  const userRoles = session.user.guildRoles as string[]
-  return userRoles.some((roleId) => ADMIN_ROLE_IDS.includes(roleId))
+  // ADMIN_ROLE_IDS contains Discord user IDs, not role IDs
+  const userDiscordId = session.user.discordId as string
+  return ADMIN_ROLE_IDS.includes(userDiscordId)
 }
 
 /**
@@ -57,14 +58,15 @@ export async function requireAuth() {
 export async function requireAdmin() {
   const session = await requireAuth()
   
-  if (!session.user?.guildRoles) {
+  if (!session.user?.discordId) {
     throw new Error("Forbidden: Admin access required")
   }
 
-  const userRoles = session.user.guildRoles as string[]
-  const hasAdminRole = userRoles.some((roleId) => ADMIN_ROLE_IDS.includes(roleId))
+  // ADMIN_ROLE_IDS contains Discord user IDs, not role IDs
+  const userDiscordId = session.user.discordId as string
+  const hasAdminAccess = ADMIN_ROLE_IDS.includes(userDiscordId)
   
-  if (!hasAdminRole) {
+  if (!hasAdminAccess) {
     throw new Error("Forbidden: Admin access required")
   }
   
