@@ -20,6 +20,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
     async signIn({ user, account, profile }) {
       if (account?.provider === "discord" && profile) {
         try {
+          // Check if user already exists with this email
+          const existingUser = await prisma.user.findUnique({
+            where: { email: profile.email as string },
+          })
+
           // Fetch guild member info to get roles
           const guildId = process.env.DISCORD_GUILD_ID!
           const response = await fetch(
@@ -34,25 +39,42 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           if (response.ok) {
             const memberData = await response.json()
             
-            // Update or create user with Discord info and roles
-            await prisma.user.upsert({
-              where: { discordId: profile.id as string },
-              update: {
-                username: profile.username as string,
-                discriminator: profile.discriminator as string,
-                email: profile.email as string,
-                avatar: profile.avatar as string,
-                guildRoles: memberData.roles || [],
-              },
-              create: {
-                discordId: profile.id as string,
-                username: profile.username as string,
-                discriminator: profile.discriminator as string,
-                email: profile.email as string,
-                avatar: profile.avatar as string,
-                guildRoles: memberData.roles || [],
-              },
-            })
+            // If user exists with email but no discordId, link the Discord account
+            if (existingUser && !existingUser.discordId) {
+              await prisma.user.update({
+                where: { id: existingUser.id },
+                data: {
+                  discordId: profile.id as string,
+                  discriminator: profile.discriminator as string,
+                  avatar: profile.avatar as string,
+                  guildRoles: memberData.roles || [],
+                },
+              })
+              // Update the account record to link to existing user
+              if (account.userId) {
+                account.userId = existingUser.id
+              }
+            } else {
+              // Update or create user with Discord info and roles
+              await prisma.user.upsert({
+                where: { discordId: profile.id as string },
+                update: {
+                  username: profile.username as string,
+                  discriminator: profile.discriminator as string,
+                  email: profile.email as string,
+                  avatar: profile.avatar as string,
+                  guildRoles: memberData.roles || [],
+                },
+                create: {
+                  discordId: profile.id as string,
+                  username: profile.username as string,
+                  discriminator: profile.discriminator as string,
+                  email: profile.email as string,
+                  avatar: profile.avatar as string,
+                  guildRoles: memberData.roles || [],
+                },
+              })
+            }
           }
         } catch (error) {
           console.error("Error fetching guild member data:", error)
