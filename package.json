@@ -35,7 +35,6 @@
     "resend": "^6.7.0",
     "tailwind-merge": "^3.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "tiptap": "^0.15.0",
     "zod": "^4.3.5"
   },
   "devDependencies": {
