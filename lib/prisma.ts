@@ -9,4 +9,7 @@ export const prisma = globalForPrisma.prisma ?? new PrismaClient({
   log: process.env.NODE_ENV === 'development' ? ['query', 'error', 'warn'] : ['error'],
 })
 
-if (process.env.NODE_ENV !== 'production') globalForPrisma.prisma = prisma
+// Always cache the Prisma client to prevent multiple instances
+if (!globalForPrisma.prisma) {
+  globalForPrisma.prisma = prisma
+}
