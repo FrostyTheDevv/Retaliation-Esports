@@ -61,10 +61,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
       return true
     },
     async session({ session, user }) {
-      if (session.user) {
+      if (session.user && user) {
         // Add user ID and Discord info to session
+        // When using database sessions, 'user' is the full user object from the database
         const dbUser = await prisma.user.findUnique({
-          where: { discordId: user.id },
+          where: { id: user.id },
           select: {
             id: true,
             discordId: true,
