@@ -11,13 +11,13 @@ export async function proxy(request: NextRequest) {
       return NextResponse.redirect(new URL("/auth/signin", request.url))
     }
 
-    // Check for admin role
-    const userRoles = (session.user.guildRoles as string[]) || []
-    const adminRoleIds = process.env.DISCORD_ADMIN_ROLE_IDS?.split(",") || []
+    // Check for admin access by Discord user ID
+    const userDiscordId = (session.user as any).discordId
+    const adminUserIds = process.env.DISCORD_ADMIN_ROLE_IDS?.split(",") || []
     
-    const hasAdminRole = userRoles.some((roleId) => adminRoleIds.includes(roleId))
+    const hasAdminAccess = adminUserIds.includes(userDiscordId)
     
-    if (!hasAdminRole) {
+    if (!hasAdminAccess) {
       return NextResponse.redirect(new URL("/auth/unauthorized", request.url))
     }
   }
