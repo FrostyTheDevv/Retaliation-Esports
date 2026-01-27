@@ -3,8 +3,18 @@ import { prisma } from "@/lib/prisma"
 
 export const dynamic = 'force-dynamic'
 
+async function checkDatabaseConnection(): Promise<boolean> {
+  try {
+    await prisma.$queryRaw`SELECT 1`
+    return true
+  } catch {
+    return false
+  }
+}
+
 export default async function AdminSettingsPage() {
   const user = await getCurrentUser()
+  const dbConnected = await checkDatabaseConnection()
 
   return (
     <div className="space-y-6">
@@ -92,7 +102,11 @@ export default async function AdminSettingsPage() {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <span className="text-gray-400">Database Connection</span>
-            <span className="text-yellow-400">⚠️ Not Connected</span>
+            {dbConnected ? (
+              <span className="text-green-400">✓ Connected</span>
+            ) : (
+              <span className="text-yellow-400">⚠️ Not Connected</span>
+            )}
           </div>
           <div className="flex items-center justify-between">
             <span className="text-gray-400">Authentication</span>
@@ -103,9 +117,11 @@ export default async function AdminSettingsPage() {
             <span className="text-green-400">✓ Verified</span>
           </div>
         </div>
-        <p className="text-sm text-gray-500 mt-4">
-          Connect a PostgreSQL database to activate all features.
-        </p>
+        {!dbConnected && (
+          <p className="text-sm text-gray-500 mt-4">
+            Connect a PostgreSQL database to activate all features.
+          </p>
+        )}
       </div>
     </div>
   )
