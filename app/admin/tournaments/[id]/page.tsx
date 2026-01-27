@@ -13,6 +13,7 @@ import {
   AlertCircle,
   Edit,
 } from "lucide-react"
+import { TournamentEmailPanel } from "@/components/admin/TournamentEmailPanel"
 
 export const dynamic = 'force-dynamic'
 
@@ -56,6 +57,7 @@ export default async function TournamentDetailPage({ params }: PageProps) {
 
   const approvedSignups = tournament.signups.filter((s: any) => s.status === "approved")
   const pendingSignups = tournament.signups.filter((s: any) => s.status === "pending")
+  const verifiedSignups = tournament.signups.filter((s: any) => s.isVerified === true)
   const completedMatches = tournament.matches.filter((m: any) => m.status === "completed")
   const activeMatches = tournament.matches.filter((m: any) =>
     ["ready", "live"].includes(m.status)
@@ -279,6 +281,18 @@ export default async function TournamentDetailPage({ params }: PageProps) {
           )}
         </Link>
       </div>
+
+      {/* Email Panel */}
+      <TournamentEmailPanel
+        tournamentId={id}
+        tournamentName={tournament.name}
+        signupCounts={{
+          total: tournament.signups.length,
+          approved: approvedSignups.length,
+          pending: pendingSignups.length,
+          verified: verifiedSignups.length,
+        }}
+      />
 
       {/* Recent Activity / Matches */}
       {tournament.matches.length > 0 && (
